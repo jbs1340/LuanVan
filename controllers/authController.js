@@ -17,8 +17,8 @@ exports.login = (req, res,next) =>{
            }
            
            // generate a signed son web token with the contents of user object and return it in the response
-           const token = jwt.sign(user.toJSON(), process.env.SECRET_KEY, {
-            expiresIn: '240h'
+           const token = jwt.sign({_id: user._id}, process.env.SECRET_KEY, {
+            expiresIn: "120h"
           });
 
            return res.status(200).send({user, token});
@@ -47,15 +47,16 @@ exports.register = (req, res) =>{
         position: query.position,
         role: query.role,
         bureau: query.bureau,
+        avatar: null,
         level: 1,
-        experience: 100,
+        experience: 0,
         coin: 0,
         happy: 200,
         skill: [],
         power: 200,
         rank: 0,
-        isMentor: false,
-        isTrainee: false,
+        mentor: null,
+        trainee: null,
     };
     var result = {};
     var status = 200;
@@ -86,20 +87,29 @@ exports.register = (req, res) =>{
 }
 exports.verifyToken = (req, res, next) => {
     var bearerHeader =  req.headers.authorization
-    var token = bearerHeader.split(" ")
+    if (bearerHeader == undefined){
+        return res.status(500).send({status: 500, message: "Token không hợp lệ"})
+    }
+    else
+        var token = bearerHeader.split(" ")
     jwt.verify(token[1],process.env.SECRET_KEY,(err,user)=>{
         if(err){
             return res.status(400).send({status: 400, message:err.message})
         }else
         {
+            console.log("u",user)
             permissionController.getPermission(user,req,(err,data)=>{
-                if(!err){
-                    return res.status(500).send({status: 500, message: permission.err.message})
-                } else if(!data){
-                        return res.status(400).send({status: 400, message: "Người dùng không được phép thực thi"})
+                console.log("a",err,data)
+                if(err != null){
+                    return res.status(500).send({status: 500, message: err.name})
+                } else if(data == null){
+                    return res.status(400).send({status: 400, message: "Người dùng không được phép thực thi"})
+                } else if(data != null){
+                    next()
+                } else {
+                    return res.status(500).send({status: 500, message: "ERROR"})
                 }
             })
-            next();
         }
     })
     

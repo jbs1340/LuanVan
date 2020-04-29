@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 const permissionSchema = mongoose.Schema({
     role: String,
+    position: String,
     method: String,
     path: String,
 })
@@ -16,8 +17,11 @@ exports.create = (permissionData, cb) =>{
 }
 
 exports.getPermission = (data,cb) => {
-    permissionModel.find(data,(err, data)=>{
-        if (err) return cb(err,null)
-        else return cb(null,data)  
+    console.log("ini",data)
+    permissionModel.findOne(data,(err, permission)=>{
+        console.log("ini",data)
+        if (err != null) return cb(err,null)
+        else if(permission != null) return cb(null,permission)  
+        else return cb(err,permission)
     })
 }

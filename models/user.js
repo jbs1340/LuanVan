@@ -6,6 +6,7 @@ const userSchema = mongoose.Schema({
   password: String,
   name: String,
   age: Number,
+  avatar: String,
   gender: String,
   email: String,
   position: String,
@@ -18,8 +19,8 @@ const userSchema = mongoose.Schema({
   skill: [],
   power: Number,
   rank: Number,
-  isMentor: Boolean,
-  isTrainee: Boolean,
+  mentor: Array,
+  trainee: Array,
 })
 
 var UserModel = mongoose.model("User", userSchema);
