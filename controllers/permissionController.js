@@ -5,7 +5,6 @@ exports.create = (req,res) => {
     query = req.body;
     var data = {
         role: query.role || "",
-        position: query.position || "",
         method: query.method || "",
         path: query.path || "",
     }
@@ -21,24 +20,13 @@ exports.create = (req,res) => {
 }
 
 exports.getPermission = (userReq,req,cb) => {
-    var data = null
     userDB.getFromId(userReq._id,(err,user)=>{
-        if(user.role == "ADMIN"){
-            data = {
+        var url = req.originalUrl.split("?")
+        var data = {
                 role: user.role,
                 method: req.method,
-                path: req.originalUrl,
+                path: url[0],
             }
-        } else if(user.role == "USER"){
-            data = {
-                role: user.role,
-                position: user.position,
-                method: req.method,
-                path: req.originalUrl,
-            }
-        } else {
-            return cb("Người dùng không có quyền thực thi", null);
-        }
 
     permissionDB.getPermission(data, (err,permiss)=>{
         if(err != null){

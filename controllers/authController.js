@@ -5,7 +5,7 @@ var permissionController = require("../controllers/permissionController");
 
 require('dotenv').config();
 
-exports.login = (req, res,next) =>{
+exports.loginUser = (req, res,next) =>{
     passport.authenticate('local', (err, user, info) => {
         console.log(info)
         if (err || !user) {
@@ -20,8 +20,33 @@ exports.login = (req, res,next) =>{
            const token = jwt.sign({_id: user._id}, process.env.SECRET_KEY, {
             expiresIn: "120h"
           });
+            if(user.role == "STAFF" || user.role == "MANAGER")
+              return res.status(200).send({user, token});
+            else
+                return res.status(400).send({status: 400, message:"Không thể truy cập"});
+        });
+    })(req, res, next);
+}
 
+exports.loginAdmin = (req, res,next) =>{
+    passport.authenticate('local', (err, user, info) => {
+        console.log(info)
+        if (err || !user) {
+            return next(err);
+        }
+       req.login(user, (err) => {
+           if (err) {
+            return next(err);
+           }
+           
+           // generate a signed son web token with the contents of user object and return it in the response
+           const token = jwt.sign({_id: user._id}, process.env.SECRET_KEY, {
+            expiresIn: "120h"
+          });
+        if(user.role == "ADMIN")
            return res.status(200).send({user, token});
+        else
+            return res.status(400).send({status: 400, message:"Không thể truy cập"});
         });
     })(req, res, next);
 }
@@ -47,7 +72,7 @@ exports.register = (req, res) =>{
         position: query.position,
         role: query.role,
         bureau: query.bureau,
-        avatar: null,
+        avatar: query.avatar||null,
         level: 1,
         experience: 0,
         coin: 0,
@@ -97,14 +122,13 @@ exports.verifyToken = (req, res, next) => {
             return res.status(400).send({status: 400, message:err.message})
         }else
         {
-            console.log("u",user)
             permissionController.getPermission(user,req,(err,data)=>{
-                console.log("a",err,data)
                 if(err != null){
                     return res.status(500).send({status: 500, message: err.name})
                 } else if(data == null){
                     return res.status(400).send({status: 400, message: "Người dùng không được phép thực thi"})
-                } else if(data != null){
+                } else if(data){
+                    req.currentUser = user
                     next()
                 } else {
                     return res.status(500).send({status: 500, message: "ERROR"})

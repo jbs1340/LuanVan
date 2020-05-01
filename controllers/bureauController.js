@@ -1,7 +1,6 @@
 var BureauDB = require("../models/bureau")
 
 exports.create = (req,res) =>{
-    console.log(req.body)
     query =  req.body
     var data = {
         members: query.member || "",
