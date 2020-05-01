@@ -38,6 +38,13 @@ exports.getFromName = function (name, cb) {
   })
 }
 
+exports.getAny = function (limit,offset, cb) {
+  BureauModel.findOne({ name: name}, function (err, data) {
+      if (err) return cb(err);
+      cb(null, data);
+  }).limit(limit).offset(offset)
+}
+
 exports.addMembers = (id,members,cb) =>{
   BureauModel.updateOne({_id: id},{members:members},(err,data)=>{
     if (err) return cb(err)

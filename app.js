@@ -11,6 +11,7 @@ var bureau = require('./routes/bureau');
 var permission = require('./routes/permissions');
 var post = require('./routes/post')
 var like = require('./routes/like')
+var comment = require('./routes/comment')
 const passport = require('passport');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -48,6 +49,7 @@ app.use('/bureau', bureau);
 app.use('/permission', permission);
 app.use('/post', post);
 app.use('/react', like);
+app.use('/comment', comment);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

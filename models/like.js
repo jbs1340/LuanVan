@@ -24,11 +24,18 @@ exports.getLike = (data,cb)=>{
     })
 }
 
-exports.isLiked = async (data,cb)=>{
-    await likeModel.findOne(data,(err,like)=>{
+exports.isLiked = async (data)=>{
+    try {
+        var like = await likeModel.findOne(data)
+        return like
+    }
+    catch (err) {
+        return err
+    }
+    /*await likeModel.findOne(data,(err,like)=>{
         if(err) return cb(err)
         return cb(null,like)
-    })
+    })*/
 }
 
 exports.unLike = (data,cb)=>{

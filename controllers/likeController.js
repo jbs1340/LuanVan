@@ -6,6 +6,9 @@ exports.like = (req,res)=>{
     var currentUser = req.currentUser;
     var query = req.body
     userDB.getFromId(currentUser._id,(err, user)=>{
+        if(err){
+            return res.status(500).send({status:500, message:err})
+        }
         var data ={
             userID : user._id,
             name : user.name,
@@ -32,7 +35,7 @@ exports.unLike = (req,res)=>{
     likeDB.unLike(data,(err,like)=>{
         console.log(err,like)
         if(err)
-            return res.status(500).send({status:500, message: err.message})
+            return res.status(500).send({status:500, message: err})
         if(like)
             return res.status(200).send({status:200, message:"UnLiked", data: like})
     })

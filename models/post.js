@@ -8,7 +8,8 @@ const postSchema = mongoose.Schema({
     type: String,
     img:Array,
     creator : {_id: mongoose.Schema.ObjectId, name: String, avatar: String},
-    isLiked: Boolean
+    isLiked: Boolean,
+    comments:Array
 })
 
 var postModel = mongoose.model('Post',postSchema);

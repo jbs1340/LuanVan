@@ -1,5 +1,6 @@
 var postDB = require('../models/post');
 var likeDB = require('../models/like');
+var commentDB = require('../models/comment');
 var moment = require('moment')
 var userDB = require('../models/user')
 
@@ -20,8 +21,9 @@ exports.create = async (req,res)=>{
         type: query.type || "PUBLIC",
         img: query.img || [],
         creator : user,
-        isLiked : false
-    }/
+        isLiked : false,
+        comments:[]
+    }
 
     postDB.create(data,(err,post)=>{
         if(err)
@@ -31,7 +33,7 @@ exports.create = async (req,res)=>{
 })
 }
 
-exports.getPosts = (req,res)=>{
+exports.getPosts = async (req,res)=>{
     var currentUser = req.currentUser;
     var limit = parseInt(req.query.limit) || 0;
     var offset = parseInt(req.query.offset) || 0;
@@ -47,15 +49,15 @@ exports.getPosts = (req,res)=>{
                     return res.status(500).send({status:500, message: err})
                 if(posts.length > 0){
                     var arrayPosts = []
-                    posts.forEach(post=>{
-                        arrayPosts.push({postID: post._id})
-                    })
-                    var likes = []
-                    likeDB.getLike({$in: arrayPosts},(err,like)=>{
-                        likes.push(like)
-                        console.log(likes)
-                    })
-                    console.log(likes)
+                    for (const post of posts) {
+                        await likeDB.isLiked({postID: post._id, userID: currentUser._id}).then(like =>{
+                            like ? post.isLiked = true : post.isLiked = false
+                         }).catch(err=>console.log(err))
+                         await commentDB.getCommentsByCurrentPost({postID: post._id, userID: currentUser._id}).then(cmt=>{
+                             cmt ? post.comments = cmt : post.comments = []
+                         }).catch(err=>console.log(err))
+                        }
+                    console.log("abc", posts)
                     return res.status(200).send({status: 200, message: "Query successfully", data: posts})
                 } else {
                     return res.status(404).send({status:404,message:"Không tìm thây", data:[]})
