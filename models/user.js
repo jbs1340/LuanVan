@@ -21,6 +21,7 @@ const userSchema = mongoose.Schema({
   rank: Number,
   mentor: Array,
   trainee: Array,
+  createdTime: Date
 })
 
 var UserModel = mongoose.model("User", userSchema);
@@ -37,7 +38,7 @@ exports.create = function (userData, cb) {
               return cb(err);
           }
           else {
-              return cb(null, data._id);
+              return cb(null, data);
           }
 
       });
@@ -54,5 +55,26 @@ exports.getFromUsername = function (_username, cb) {
   UserModel.findOne({ username: _username}, function (err, data) {
       if (err) return cb(err);
       cb(null, data);
+  })
+}
+
+exports.update = (query,data,cb)=>{
+  UserModel.updateMany(query,data,(err,user)=>{
+    if(err) return cb(err)
+    return cb(null,user)
+  })
+}
+
+exports.updateUser = (query,data,cb)=>{
+  UserModel.findByIdAndUpdate(query,data,(err,user)=>{
+    if(err) return cb(err)
+    return cb(null,user)
+  })
+}
+
+exports.findAny = (query,cb)=>{
+  UserModel.find(query,(err,user)=>{
+    if(err) return cb(err)
+    return cb(null,user)
   })
 }

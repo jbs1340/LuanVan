@@ -22,7 +22,8 @@ exports.create = async (req,res)=>{
         img: query.img || [],
         creator : user,
         isLiked : false,
-        comments:[]
+        comments:[],
+        likesTotal: 0
     }
 
     postDB.create(data,(err,post)=>{
@@ -53,11 +54,14 @@ exports.getPosts = async (req,res)=>{
                         await likeDB.isLiked({postID: post._id, userID: currentUser._id}).then(like =>{
                             like ? post.isLiked = true : post.isLiked = false
                          }).catch(err=>console.log(err))
-                         await commentDB.getCommentsByCurrentPost({postID: post._id, userID: currentUser._id}).then(cmt=>{
+                         await commentDB.getCommentsByCurrentPost({postID: post._id}).then(cmt=>{
                              cmt ? post.comments = cmt : post.comments = []
                          }).catch(err=>console.log(err))
-                        }
-                    console.log("abc", posts)
+                        
+                        await likeDB.total({postID: post._id},(err,total)=>{
+                            total ? post.likesTotal = total : post.likesTotal = 0
+                        })
+                    }
                     return res.status(200).send({status: 200, message: "Query successfully", data: posts})
                 } else {
                     return res.status(404).send({status:404,message:"Không tìm thây", data:[]})

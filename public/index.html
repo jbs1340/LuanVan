@@ -1,0 +1,23 @@
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<form>
+    <h1>CHAT</h1>
+    <input id="m"/>
+    <input type="submit" value="P"/>
+</form>
+<ul id="messages"></ul>
+<script>
+  $(function () {
+    var socket = io();
+    socket.emit('Client-login', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWE4OTIwYTdiYzc0YjA0NTAzOTExYTMiLCJpYXQiOjE1ODgxNzQ0NTksImV4cCI6MTU4ODYwNjQ1OX0.1qVgjJ4K7IOJ3NKRhXyf6sgZhzSR90_6RvSRbJ4P1MA');
+    $('form').submit(function(e) {
+      e.preventDefault(); // prevents page reloading
+    //   socket.emit('Client-login', $('#m').val());
+      $('#m').val('');
+      return false;
+    });
+    socket.on('Change-socketid-sucessfully', function(msg){
+        socket.emit('Create-chatroom',{users:[{_id: "123123"},{_id:"123123123"}]}) ;
+    });
+  });
+</script>

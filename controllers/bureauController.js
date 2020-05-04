@@ -1,4 +1,5 @@
 var BureauDB = require("../models/bureau")
+var moment = require('moment')
 
 exports.create = (req,res) =>{
     query =  req.body
@@ -9,6 +10,7 @@ exports.create = (req,res) =>{
         totalPower: 0,
         warehouse: [{}],
         rank: 0,
+        createdTime: moment().format()
     }
     var msg = ''
     if(data.member == "" || data.chef == ""){

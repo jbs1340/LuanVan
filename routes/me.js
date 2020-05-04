@@ -1,12 +1,10 @@
 var express = require('express');
+const authController = require('../controllers/authController');
+const userController = require('../controllers/userController');
+
 var router = express.Router();
 /* GET users listing. */
-router.get('', function(req, res, next) {
-  if (req.err || !req.user) {
-    return next(req.err);
-}
-  else return res.status(200).send({message:"Hello"});
-});
+router.get('/',authController.verifyToken,userController.me)
 
 
 module.exports = router;

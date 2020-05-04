@@ -6,7 +6,7 @@ const commentSchema = mongoose.Schema({
     avatar: String,
     postID: String,
     content: String,
-    createdTime: String
+    createdTime: Date
 })
 
 var commentModel = mongoose.model("Comment",commentSchema)
@@ -21,7 +21,7 @@ exports.create = (data,cb)=>{
 
 exports.getCommentsByCurrentPost = async (data,cb)=>{
     try{
-        var comment = commentModel.find(data).limit(10).skip(0)
+        var comment = commentModel.find(data).limit(100).skip(0).sort({createdTime: -1})
         return comment
     }catch(err){
         return err

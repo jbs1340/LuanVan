@@ -2,14 +2,15 @@ var mongoose = require('mongoose');
 
 const postSchema = mongoose.Schema({
     content: String,
-    createdTime: String,
+    createdTime: Date,
     tags: Array,
     hashTags: Array,
     type: String,
     img:Array,
     creator : {_id: mongoose.Schema.ObjectId, name: String, avatar: String},
     isLiked: Boolean,
-    comments:Array
+    comments:Array,
+    likesTotal: Number
 })
 
 var postModel = mongoose.model('Post',postSchema);
@@ -27,5 +28,5 @@ exports.getPosts = (postData,limit,offset,cb)=>{
         if(err)
             return cb(err)
         return cb(null,post)
-    }).limit(limit).skip(offset)
+    }).limit(limit).skip(offset).sort({createdTime:-1})
 }

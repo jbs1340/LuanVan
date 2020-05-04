@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const passport = require("passport");
 var UserDB = require("../models/user");
 var permissionController = require("../controllers/permissionController");
+var moment = require('moment')
 
 require('dotenv').config();
 
@@ -21,7 +22,7 @@ exports.loginUser = (req, res,next) =>{
             expiresIn: "120h"
           });
             if(user.role == "STAFF" || user.role == "MANAGER")
-              return res.status(200).send({user, token});
+              return res.status(200).send(token);
             else
                 return res.status(400).send({status: 400, message:"Không thể truy cập"});
         });
@@ -44,7 +45,7 @@ exports.loginAdmin = (req, res,next) =>{
             expiresIn: "120h"
           });
         if(user.role == "ADMIN")
-           return res.status(200).send({user, token});
+           return res.status(200).send(token);
         else
             return res.status(400).send({status: 400, message:"Không thể truy cập"});
         });
@@ -82,6 +83,7 @@ exports.register = (req, res) =>{
         rank: 0,
         mentor: null,
         trainee: null,
+        createdTime: moment().format()
     };
     var result = {};
     var status = 200;

@@ -8,6 +8,7 @@ const bureauSchema = mongoose.Schema({
   totalPower: Number,
   warehouse: Object,
   rank: Number,
+  createdTime: Date
 })
 
 var BureauModel = mongoose.model("Bureau", bureauSchema);

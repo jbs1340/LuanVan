@@ -5,7 +5,7 @@ const likeSchema = mongoose.Schema({
     name: String,
     avatar: String,
     postID: String,
-    createdTime: String
+    createdTime: Date
 })
 
 var likeModel = mongoose.model('Like', likeSchema)
@@ -43,5 +43,13 @@ exports.unLike = (data,cb)=>{
         console.log(err,unLike)
         if(err) return cb(err)
         return cb(null,unLike)
+    })
+}
+
+exports.total = (data,cb)=>{
+    likeModel.count(data,(err,size)=>{
+        if(err)
+            return cb(err)
+        return cb(null,size)
     })
 }

@@ -17,8 +17,6 @@ exports.create = (permissionData, cb) =>{
 
 exports.getPermission = (data,cb) => {
     permissionModel.findOne(data,(err, permission)=>{
-        if (err != null) return cb(err,null)
-        else if(permission != null) return cb(null,permission)  
-        else return cb(err,permission)
+        return cb(err,permission)
     })
 }

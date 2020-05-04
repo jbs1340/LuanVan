@@ -12,6 +12,8 @@ var permission = require('./routes/permissions');
 var post = require('./routes/post')
 var like = require('./routes/like')
 var comment = require('./routes/comment')
+var project = require('./routes/project')
+var task = require('./routes/task')
 const passport = require('passport');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -41,15 +43,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({secret: process.env.SECRET_KEY})); // chuối bí mật đã mã hóa coookie
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.get('/', (req, res) => {
+  res.sendFile(__dirname);
+});
 app.use('/', index);
-app.use('/me', passport.authenticate('jwt', {session: false}), me);
+app.use('/me',  me);
 app.use('/user', auth);
 app.use('/bureau', bureau);
 app.use('/permission', permission);
 app.use('/post', post);
 app.use('/react', like);
 app.use('/comment', comment);
+app.use('/project', project);
+app.use('/task', task);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
