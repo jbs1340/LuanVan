@@ -15,3 +15,10 @@ exports.create = async(data,cb)=>{
         return cb(null,room)
     })
 }
+
+exports.findById = (_id,cb)=>{
+    chatroomModel.findById(_id,(err,room)=>{
+        if(err) return cb(err)
+        return cb(err,room)
+    })
+}

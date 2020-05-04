@@ -10,8 +10,11 @@ var messageSchema = mongoose.Schema({
 
 var messageModel = mongoose.model("Messages", messageSchema)
 
-exports.create = async(data)=>{
-    return await messageModel.create(data)
+exports.create = async(data,cb)=>{
+    await messageModel.create(data,(err,mess)=>{
+        if(err) return cb(err)
+        return cb(null,mess)
+    })
 }
 
 exports.get = async (query,limit,offset)=>{
