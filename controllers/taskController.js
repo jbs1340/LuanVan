@@ -170,10 +170,10 @@ exports.done = (req,res)=>{
                                         var curCoin = parseInt(u.coin)
                                         var curExperience = parseInt(u.experience)
                                         var curLevel = parseInt(u.level)
-                                        if(curExperience%1000==0)
-                                            curLevel += 1
                                         curCoin += bonusCoin
                                         curExperience += bonusExpr*difficulty
+                                        if(curExperience%1000==0)
+                                            curLevel += 1
                                         console.log(u,bonusCoin,curCoin)
                                         userDB.updateUser(u._id,
                                         {coin: curCoin,experience : curExperience, level: curLevel} ,(err,newUser)=>{

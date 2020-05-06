@@ -10,10 +10,19 @@ var missionSchema = mongoose.Schema({
     coin: Number,
     experience: Number,
     type: String,
-    target: Array
+    target: Array,
+    outOfDate: Boolean
+})
+
+var missionLogsSchema = mongoose.Schema({
+    missionID: String,
+    userID : String,
+    status : String,
+    completedTime: Date
 })
 
 var missionModel = mongoose.model("Mission",missionSchema)
+var missionLogsModel = mongoose.model("Mission_Logs",missionLogsSchema)
 
 exports.create = (data,cb)=>{
     missionModel.create(data, (err, mission)=>{
@@ -27,4 +36,18 @@ exports.get = (query,limit,offset,cb)=>{
         if(err) return cb(err)
         return cb(err,mission)
     }).limit(limit).skip(offset).sort({createdTime: -1})
+}
+
+exports.done = (query,cb)=>{
+    missionLogsModel.create(query,(err,mission)=>{
+        if(err) return cb(err)
+        return cb(err,mission)
+    })
+}
+
+exports.getLogs = (data,limit,offset,cb)=>{
+    missionLogsModel.find(data,(err,mission)=>{
+        if(err) return cb(err)
+        return cb(err,mission)
+    })
 }
