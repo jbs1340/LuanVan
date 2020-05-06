@@ -1,6 +1,7 @@
 var moment = require('moment')
 var messageDB = require('../models/message')
 var ChatroomDB = require("../models/chatroom");
+const mongoose = require('mongoose')
 
 exports.getMessByIDRoom = (req,res)=>{
     var idRoom = req.query.idRoom || ""
@@ -10,7 +11,7 @@ exports.getMessByIDRoom = (req,res)=>{
     var query = {
         roomID: idRoom
     }
-    ChatroomDB.find({roomID : idRoom,"users._id": currentUser._id},1,0,(err,room)=>{
+    ChatroomDB.find({_id: idRoom,"users._id": currentUser._id},2,0,(err,room)=>{
         if(err)
             return res.status(500).send({status: 500, message: err.message})
         if(room.length > 0){

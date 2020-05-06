@@ -21,8 +21,47 @@ exports.getUsersAny = (req,res)=>{
   userDB.findAny(query,limit,offset,(err, user)=>{
     if(err) 
     return res.status(500).send({status: 500, message:err.message})      
-    if(user.length > 0)
-      return res.status(200).send({status: 200, message:"Query successfully", data: user})
+    if(user.length > 0){
+      var dataUser = []
+      user.forEach(u => {
+        var newUser = {}
+        newUser.name = u.name || "Người dùng YUH"
+        newUser.username = u.username
+        newUser.role = u.role
+        newUser._id=u._id
+        newUser.avatar = u.avatar
+        newUser.position = newUser.position
+        dataUser.push(newUser)
+      });
+      return res.status(200).send({status: 200, message:"Query successfully", data: dataUser})
+    }
+    else
+    return res.status(404).send({status: 404, message:"NOT FOUND", data: []})
+  })
+}
+
+exports.getUsersAll = (req,res)=>{
+  var limit = parseInt(req.query.limit) || 1;
+  var offset = parseInt(req.query.offset) || 0;
+  var query = {
+  }
+  userDB.findAny(query,limit,offset,(err, user)=>{
+    if(err) 
+    return res.status(500).send({status: 500, message:err.message})      
+    if(user.length > 0){
+      var dataUser = []
+      user.forEach(u => {
+        var newUser = {}
+        newUser.name = u.name || "Người dùng YUH"
+        newUser.username = u.username
+        newUser.role = u.role
+        newUser._id=u._id
+        newUser.avatar = u.avatar
+        newUser.position = newUser.position
+        dataUser.push(newUser)
+      });
+      return res.status(200).send({status: 200, message:"Query successfully", data: dataUser})
+    }
     else
     return res.status(404).send({status: 404, message:"NOT FOUND", data: []})
   })

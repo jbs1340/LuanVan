@@ -18,6 +18,9 @@ exports.create = async(data,cb)=>{
     })
 }
 
-exports.get = async (query,limit,offset)=>{
-    return await messageModel.find(query).limit(limit).skip(offset)
+exports.get = async (query,limit,offset,cb)=>{
+    messageModel.find(query,(err,mess)=>{
+        if(err) return cb(err)
+        return cb(null,mess)
+    }).limit(limit).skip(offset)
 }

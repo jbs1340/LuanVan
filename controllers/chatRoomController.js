@@ -7,8 +7,6 @@ exports.create = (req,res)=>{
     if (users. length == 0 || users == ""){
         return res.status(400).send({status:400, message:"Input invalid"})
     }
-
-    console.log(_id)
     var data = {
         users: users,
         expired: query.expired || null,
