@@ -14,6 +14,8 @@ var like = require('./routes/like')
 var comment = require('./routes/comment')
 var project = require('./routes/project')
 var task = require('./routes/task')
+var chatroom = require('./routes/chatroom')
+var message = require('./routes/message')
 const passport = require('passport');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -56,6 +58,8 @@ app.use('/react', like);
 app.use('/comment', comment);
 app.use('/project', project);
 app.use('/task', task);
+app.use('/chatroom', chatroom);
+app.use('/message', message);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

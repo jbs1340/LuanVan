@@ -6,50 +6,51 @@ var moment = require('moment')
 
 require('dotenv').config();
 
-exports.loginUser = (req, res,next) =>{
+exports.loginUser = (req, res) =>{
     passport.authenticate('local', (err, user, info) => {
         console.log(info)
-        if (err || !user) {
-            return next(err);
+        if (err || !user || info) {
+            return res.status(400).send({status: 400, message:info.message});
         }
        req.login(user, (err) => {
            if (err) {
-            return next(err);
-           }
+            return res.status(400).send({status: 400, message:err.message});
+        }
            
            // generate a signed son web token with the contents of user object and return it in the response
            const token = jwt.sign({_id: user._id}, process.env.SECRET_KEY, {
             expiresIn: "120h"
           });
             if(user.role == "STAFF" || user.role == "MANAGER")
-              return res.status(200).send(token);
+              return res.status(200).send({token: token});
             else
                 return res.status(400).send({status: 400, message:"Không thể truy cập"});
         });
-    })(req, res, next);
+    })(req, res);
 }
 
-exports.loginAdmin = (req, res,next) =>{
+exports.loginAdmin = (req, res) =>{
     passport.authenticate('local', (err, user, info) => {
         console.log(info)
         if (err || !user) {
-            return next(err);
+            return res.status(400).send({status: 400, message:err.message});
         }
        req.login(user, (err) => {
            if (err) {
-            return next(err);
-           }
+               console.log(err)
+               return res.status(400).send({status: 400, message:err.message});
+            }
            
            // generate a signed son web token with the contents of user object and return it in the response
            const token = jwt.sign({_id: user._id}, process.env.SECRET_KEY, {
             expiresIn: "120h"
           });
         if(user.role == "ADMIN")
-           return res.status(200).send(token);
+           return res.status(200).send({token: token});
         else
             return res.status(400).send({status: 400, message:"Không thể truy cập"});
         });
-    })(req, res, next);
+    })(req, res);
 }
 
 function UserRegisterValidation(data, cb) {

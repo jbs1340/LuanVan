@@ -10,9 +10,9 @@ exports.create = (req,res)=>{
     if(!query.name){
         return res.status(400).send({status:400, message:"Input invalid"})
     }else{
-        var project = projectDB.getBy({name: query.name},1,0)    
-    }
-    project.then(p=>{
+       projectDB.getBy({name: query.name},1,0,(err,p)=>{
+        if(err)
+            return res.status(500).send({status:500, message:err.message})
         if(p.length == 0){
             userDB.getFromId(currentUser._id,(err,user)=>{
                 if(err)
@@ -38,7 +38,8 @@ exports.create = (req,res)=>{
         } else {
             return res.status(400).send({status:400, message:"Tên dự án đã tồn tại"})
         }
-    }).catch(err => res.status(500).send({status:500, message:err.message}))
+    })
+    }
 }
 
 exports.getMyProjectsIsActive = (req,res)=>{

@@ -72,9 +72,10 @@ exports.updateUser = (query,data,cb)=>{
   })
 }
 
-exports.findAny = (query,cb)=>{
+exports.findAny = (query,limit,offset,cb)=>{
+  console.log(query)
   UserModel.find(query,(err,user)=>{
     if(err) return cb(err)
     return cb(null,user)
-  })
+  }).limit(limit).skip(offset)
 }

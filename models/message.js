@@ -5,7 +5,8 @@ var messageSchema = mongoose.Schema({
     message: String,
     img: String,
     userID: String,
-    roomID: String
+    roomID: String,
+    read: Array
 })
 
 var messageModel = mongoose.model("Messages", messageSchema)

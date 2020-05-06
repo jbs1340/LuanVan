@@ -10,3 +10,20 @@ exports.me = (req,res)=>{
       return res.status(400).send({status: 400, message:"ERROR!", data: []})
     }) 
 }
+
+exports.getUsersAny = (req,res)=>{
+  var username = req.query.username || ""
+  var limit = parseInt(req.query.limit) || 1;
+  var offset = parseInt(req.query.offset) || 0;
+  var query = {
+    username : {$regex: username+'.*'}
+  }
+  userDB.findAny(query,limit,offset,(err, user)=>{
+    if(err) 
+    return res.status(500).send({status: 500, message:err.message})      
+    if(user.length > 0)
+      return res.status(200).send({status: 200, message:"Query successfully", data: user})
+    else
+    return res.status(404).send({status: 404, message:"NOT FOUND", data: []})
+  })
+}
