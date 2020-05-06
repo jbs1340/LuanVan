@@ -75,7 +75,7 @@ exports.register = (req, res) =>{
         position: query.position,
         role: query.role,
         bureau: query.bureau,
-        avatar: query.avatar||null,
+        avatar: query.avatar||"https://image.flaticon.com/icons/svg/145/145846.svg",
         level: 1,
         experience: 0,
         coin: 0,
