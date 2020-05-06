@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 var moment = require('moment')
 
 const userSchema = mongoose.Schema({
-  // _id: Number,
   username: String,
   password: String,
   name: String,
@@ -42,7 +41,7 @@ exports.create = function (userData, cb) {
           else {
               return cb(null, data);
           }
-
+ 
       });
   });
 }
@@ -50,13 +49,13 @@ exports.create = function (userData, cb) {
 exports.getFromId = function (id, cb) {
   UserModel.findOne({ _id: id}, function (err, data) {
       if (err) return cb(err);
-      cb(null, data);
+      return cb(null, data);
   })
 }
 exports.getFromUsername = function (_username, cb) {
   UserModel.findOne({ username: _username}, function (err, data) {
       if (err) return cb(err);
-      cb(null, data);
+      return cb(null, data);
   })
 }
 

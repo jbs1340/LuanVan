@@ -3,7 +3,6 @@ var moment = require('moment')
 const Schema = mongoose.Schema
 
 const projectSchema = {
-    _id:Number,
     name: String,
     description: String,
     deadline: Date,

@@ -19,7 +19,6 @@ exports.create = (req,res)=>{
                 if(err)
                     return res.status(500).send({status:500, message:err.message})
                 var data ={
-                    _id: moment().unix(),
                     name: query.name,
                     description: query.description||'',
                     deadline: query.deadline,

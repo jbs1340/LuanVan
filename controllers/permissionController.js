@@ -21,20 +21,29 @@ exports.create = (req,res) => {
 
 exports.getPermission = (userReq,req,cb) => {
     userDB.getFromId(userReq._id,(err,user)=>{
-        var url = req.originalUrl.split("?")
-        var data = {
-                role: user.role,
-                method: req.method,
-                path: url[0],
-            }
+        if(err)
+            return cb(err)
+        if(user){
+            var url = req.originalUrl.split("?")
+            var data = {
+                    role: user.role,
+                    method: req.method,
+                    path: url[0],
+                }
+            permissionDB.getPermission(data, (err,permiss)=>{
+                if(err != null){
+                    return cb(err,null)
+                } else if(permiss != null) {
+                    return cb(null,permiss)
+                } else return cb(err,permiss)
+            })
+        } else {
+            var err
+            err.message = "Không tim thấy user"
+            return cb(err)
+        }
 
-    permissionDB.getPermission(data, (err,permiss)=>{
-        if(err != null){
-            return cb(err,null)
-        } else if(permiss != null) {
-            return cb(null,permiss)
-        } else return cb(err,permiss)
-    })
+
 })
 
 }

@@ -62,10 +62,8 @@ function UserRegisterValidation(data, cb) {
 }
 
 exports.register = (req, res) =>{
-    console.log(req.params)
     var query = req.body
     var data = {
-        _id: moment().unix(),
         username: query.username,
         password: query.password,
         name: query.name,
@@ -74,7 +72,7 @@ exports.register = (req, res) =>{
         email: query.email,
         position: query.position,
         role: query.role,
-        bureau: query.bureau,
+        bureau: query.bureau||null,
         avatar: query.avatar||"https://image.flaticon.com/icons/svg/145/145846.svg",
         level: 1,
         experience: 0,

@@ -7,7 +7,7 @@ const postSchema = mongoose.Schema({
     hashTags: Array,
     type: String,
     img:Array,
-    creator : {_id: mongoose.Schema.ObjectId, name: String, avatar: String},
+    creator : {_id: String, name: String, avatar: String},
     isLiked: Boolean,
     comments:Array,
     likesTotal: Number

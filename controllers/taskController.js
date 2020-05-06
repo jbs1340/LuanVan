@@ -7,7 +7,6 @@ exports.create = (req,res)=>{
     var currentUser = req.currentUser
     var query = req.body
     var data = {
-        _id: moment().unix(),
         description: query.description || "",
         title: query.title || "",
         takenBy: query.takenBy || "",
