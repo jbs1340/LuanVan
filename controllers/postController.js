@@ -14,6 +14,7 @@ exports.create = async (req,res)=>{
             return res.status(404).send({status:404, message: "Không tìm thấy user"})
 
     var data = {
+        _id: moment().unix(),
         content: query.content,
         createdTime: moment().format(),
         tags: query.tags||[],

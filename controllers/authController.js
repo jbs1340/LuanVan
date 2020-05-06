@@ -65,6 +65,7 @@ exports.register = (req, res) =>{
     console.log(req.params)
     var query = req.body
     var data = {
+        _id: moment().unix(),
         username: query.username,
         password: query.password,
         name: query.name,
