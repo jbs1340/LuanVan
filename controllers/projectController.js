@@ -5,10 +5,10 @@ var taskDB = require('../models/task')
 
 exports.create = (req,res)=>{
     var currentUser = req.currentUser
-    var deadline = req.query.deadline || ""
+    var deadline = req.body.deadline || ""
     console.log(currentUser)
     var query = req.body
-    if(!query.name || deadline == "" || moment().isValid(deadline)){
+    if(!query.name || deadline == "" || !moment(deadline).isValid()){
         return res.status(400).send({status:400, message:"Input invalid. Must have name is String and deadline is Date"})
     }else{
        projectDB.getBy({name: query.name},1,0,(err,p)=>{

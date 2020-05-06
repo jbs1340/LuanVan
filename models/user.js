@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var moment = require('moment')
 
 const userSchema = mongoose.Schema({
-  _id: Number,
+  // _id: Number,
   username: String,
   password: String,
   name: String,
