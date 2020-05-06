@@ -1,9 +1,11 @@
 var mongoose = require('mongoose');
 
 var chatroomSchema = mongoose.Schema({
+    name: String,
     users: Array,
     expired: Date,
-    createdTime: Date
+    createdTime: Date,
+    updatedTime: Date
 })
 
 var chatroomModel = mongoose.model("Chatroom", chatroomSchema)

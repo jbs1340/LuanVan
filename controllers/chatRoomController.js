@@ -8,9 +8,11 @@ exports.create = (req,res)=>{
         return res.status(400).send({status:400, message:"Input invalid"})
     }
     var data = {
+        name: query.name || users[0].name,
         users: users,
         expired: query.expired || null,
-        createdTime: moment().format()
+        createdTime: moment().format(),
+        updatedTime: moment().format()
     }
     ChatroomDB.create(data,(err,room)=>{
         if(err)
