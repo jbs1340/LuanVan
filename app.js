@@ -18,6 +18,7 @@ var chatroom = require('./routes/chatroom')
 var message = require('./routes/message')
 var upload = require('./routes/upload')
 var mission = require('./routes/mission')
+var market = require('./routes/market')
 const passport = require('passport');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -64,6 +65,8 @@ app.use('/chatroom', chatroom);
 app.use('/message', message);
 app.use('/upload', upload);
 app.use('/mission', mission);
+app.use('/market', market);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
