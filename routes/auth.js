@@ -9,5 +9,4 @@ router.post('/register',authController.register);
 router.get('/any',authController.verifyToken,userController.getUsersAny)
 router.get('/all',authController.verifyToken,userController.getUsersAll)
 
-//router.post('/updateinfo', authController.verifyToken, authController.updateInfo);
 module.exports = router;

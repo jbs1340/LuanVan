@@ -3,6 +3,7 @@ const passport = require("passport");
 var UserDB = require("../models/user");
 var permissionController = require("../controllers/permissionController");
 var moment = require('moment')
+var bcrypt = require('bcrypt');
 
 require('dotenv').config();
 
@@ -81,8 +82,8 @@ exports.register = (req, res) =>{
         skill: [],
         power: 200,
         rank: 0,
-        mentor: null,
-        trainee: null,
+        mentor: [],
+        trainee: [],
         createdTime: moment().format()
     };
     var result = {};
@@ -139,4 +140,32 @@ exports.verifyToken = (req, res, next) => {
         }
     })
     
+  }
+
+  exports.updateInfo = async(req,res) =>{
+      var currentUser =  req.currentUser
+      var data = req.body
+      new Promise(resolve =>{
+        if(data.password != undefined){
+            bcrypt.hash(data.password,10, (err, pass)=>{
+              if(err)
+                  return res.status(400).send({status: 400, message:err.message})
+               data.password = pass
+               resolve(data)
+            })
+        } else {
+            resolve(data)
+        }
+      }).then(data =>{
+        UserDB.updateUser(currentUser._id,data,(err,user)=>{
+            if(err)
+                return res.status(400).send({status: 400, message:err.message})
+            if(user){
+                user = data
+                return res.status(200).send({status: 200, message:"Updated successfully",data: user})
+              } else {
+                return res.status(400).send({status: 400, message:"Updated failed"})
+              }
+          })
+      })
   }
