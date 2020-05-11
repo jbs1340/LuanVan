@@ -20,6 +20,7 @@ var upload = require('./routes/upload')
 var mission = require('./routes/mission')
 var market = require('./routes/market')
 var relation = require('./routes/relation')
+var tankinh = require('./routes/tankinh')
 const passport = require('passport');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -68,6 +69,7 @@ app.use('/upload', upload);
 app.use('/mission', mission);
 app.use('/market', market);
 app.use('/relation', relation);
+app.use('/tankinh', tankinh);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
