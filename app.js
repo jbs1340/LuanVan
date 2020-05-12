@@ -1,4 +1,5 @@
 var express = require('express');
+var cors = require('cors')
 var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -50,6 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({secret: process.env.SECRET_KEY})); // chuối bí mật đã mã hóa coookie
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cors())
 app.get('/', (req, res) => {
   res.sendFile(__dirname);
 });
