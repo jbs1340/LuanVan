@@ -33,8 +33,8 @@ exports.loginUser = (req, res) =>{
 exports.loginAdmin = (req, res) =>{
     passport.authenticate('local', (err, user, info) => {
         console.log(info)
-        if (err || !user) {
-            return res.status(400).send({status: 400, message:err.message});
+        if (err || !user || info) {
+            return res.status(400).send({status: 400, message:info.message});
         }
        req.login(user, (err) => {
            if (err) {
