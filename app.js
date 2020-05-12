@@ -52,8 +52,9 @@ app.use(session({secret: process.env.SECRET_KEY})); // chuối bí mật đã m�
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors())
-app.use((req,res)=>{
+app.use((req,res,next)=>{
   res.setHeader('Access-Control-Allow-Credentials','true')
+  next()
 })
 app.get('/', (req, res) => {
   res.sendFile(__dirname);
