@@ -24,13 +24,8 @@ exports.getUsersAny = (req,res)=>{
     if(user.length > 0){
       var dataUser = []
       user.forEach(u => {
-        var newUser = {}
-        newUser.name = u.name || "Người dùng YUH"
-        newUser.username = u.username
-        newUser.role = u.role
-        newUser._id=u._id
-        newUser.avatar = u.avatar
-        newUser.position = newUser.position
+        var newUser = u
+        delete newUser.password
         dataUser.push(newUser)
       });
       return res.status(200).send({status: 200, message:"Query successfully", data: dataUser})
