@@ -26,6 +26,7 @@ exports.getUsersAny = (req,res)=>{
       user.forEach(u => {
         var newUser = u
         newUser.password = ""
+        newUser.address = ""
         dataUser.push(newUser)
       });
       return res.status(200).send({status: 200, message:"Query successfully", data: dataUser})
@@ -48,6 +49,7 @@ exports.getUsersAll = (req,res)=>{
       user.forEach(u => {
         var newUser = u
         newUser.password = ""
+        newUser.address = ""
         dataUser.push(newUser)
       });
       return res.status(200).send({status: 200, message:"Query successfully", data: dataUser})

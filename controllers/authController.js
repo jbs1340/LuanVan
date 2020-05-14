@@ -65,16 +65,18 @@ function UserRegisterValidation(data, cb) {
 exports.register = (req, res) =>{
     var query = req.body
     var data = {
-        username: query.username,
-        password: query.password,
-        name: query.name,
-        age: query.age,
+        username: query.username || "",
+        password: query.password || "",
+        name: query.name || "" ,
+        age: query.age || 0,
         gender: query.gender,
         email: query.email,
         position: query.position,
         role: query.role,
         bureau: query.bureau||null,
         avatar: query.avatar||"https://image.flaticon.com/icons/svg/145/145846.svg",
+        phone: query.phone || "",
+        address: query.address || "",
         level: 1,
         experience: 0,
         coin: 0,
@@ -88,6 +90,9 @@ exports.register = (req, res) =>{
     };
     var result = {};
     var status = 200;
+    if(data.phone == "" || data.address == "" || data.name == "" || data.age < 18){
+        return res.status(400).send({status: 400, message:"Input invalid, must have phone & address & name & age > 18"})
+    }
     UserRegisterValidation(data, function (msg) {
         if (msg == null) {
             UserDB.create(data, function (err, id) {
