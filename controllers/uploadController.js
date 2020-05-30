@@ -4,7 +4,7 @@ var moment = require('moment')
 
 exports.uploads = (req,res)=>{
     let form = new formidable.IncomingForm();
-    form.uploadDir = "public/uploads/"
+    form.uploadDir = "uploads/"
     form.parse(req, (err, fields, files) => {
         if (err) throw err;
         // Lấy ra đường dẫn tạm của tệp tin trên server

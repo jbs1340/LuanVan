@@ -74,7 +74,7 @@ exports.register = (req, res) =>{
         position: query.position,
         role: query.role,
         bureau: query.bureau||null,
-        avatar: query.avatar||"https://image.flaticon.com/icons/svg/145/145846.svg",
+        avatar: query.avatar||"https://image.flaticon.com/icons/png/512/2919/2919573.png",
         phone: query.phone || "",
         address: query.address || "",
         level: 1,
