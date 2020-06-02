@@ -6,7 +6,9 @@ exports.uploads = (req,res)=>{
     let form = new formidable.IncomingForm();
     form.uploadDir = "public/uploads/"
     form.parse(req, (err, fields, files) => {
-        if (err) throw err;
+        if (err) {
+            return res.status(400).send({status: 400, message:err.message})
+        };
         // Lấy ra đường dẫn tạm của tệp tin trên server
         let tmpPath = files.file.path;
 
