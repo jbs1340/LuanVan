@@ -82,3 +82,17 @@ exports.findAny = (query,limit,offset,cb)=>{
     return cb(null,user)
   }).limit(limit).skip(offset)
 }
+
+exports.ranking_all = (limit,offset,cb)=>{
+  UserModel.find({},(err,users)=>{
+    if(err) return cb(err)
+    return cb(null,users)
+  }).sort({level: -1, experience: -1}).limit(limit).skip(offset)
+}
+
+exports.ranking_self = (_id,cb)=>{
+  UserModel.find({},(err,users)=>{
+    if(err) return cb(err)
+    return cb(null,users)
+  }).sort({level: -1, experience: -1})
+}
