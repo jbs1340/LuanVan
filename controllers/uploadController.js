@@ -10,11 +10,11 @@ exports.uploads = (req,res)=>{
             return res.status(400).send({status: 400, message:err.message})
         };
         // Lấy ra đường dẫn tạm của tệp tin trên server
-        let tmpPath = files.file.path;
 
         if (files.file == undefined || files.file == "" || files.file == null) {
             return res.status(400).send({status: 400, message:"File is invalid"})
         }
+        let tmpPath = files.file.path;
         // Khởi tạo đường dẫn mới, mục đích để lưu file vào thư mục uploads của chúng ta
         let newFile = moment().unix()+'-'+ files.file.name ;
         let newPath = form.uploadDir + newFile
