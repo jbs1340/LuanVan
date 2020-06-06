@@ -53,6 +53,7 @@ exports.socketio = function (socket){
         MessageDB.create(message,(err,mess)=>{
             if(err)  socket.emit("message-error", {message: err.message, status: failed})
         })
+        ChatroomDB.update_time(socket.roomID)
       })
       socket.on("Client-disconnect",function(){
         socket.disconnect(true);

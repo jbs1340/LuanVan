@@ -18,9 +18,16 @@ exports.create = async(data,cb)=>{
     })
 }
 
-exports.get = async (query,limit,offset,cb)=>{
-    messageModel.find(query,(err,mess)=>{
-        if(err) return cb(err)
-        return cb(null,mess)
-    }).limit(limit).skip(offset)
+exports.get = async (query,limit,offset, reverse,cb)=>{
+    if (!reverse) {
+        messageModel.find(query,(err,mess)=>{
+            if(err) return cb(err)
+            return cb(null,mess)
+        }).limit(limit).skip(offset)
+    } else {
+        messageModel.find(query,(err,mess)=>{
+            if(err) return cb(err)
+            return cb(null,mess)
+        }).limit(limit).skip(offset).sort({createdTime: -1})
+    }
 }

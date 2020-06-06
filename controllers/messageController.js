@@ -7,6 +7,7 @@ exports.getMessByIDRoom = (req,res)=>{
     var idRoom = req.query.idRoom || ""
     var limit = parseInt(req.query.limit) || 1;
     var offset = parseInt(req.query.offset) || 0;
+    var reverse = req.query.reverse == "true" ? true : false;
     var currentUser = req.currentUser
     var query = {
         roomID: idRoom
@@ -15,7 +16,7 @@ exports.getMessByIDRoom = (req,res)=>{
         if(err)
             return res.status(500).send({status: 500, message: err.message})
         if(room.length > 0){
-            messageDB.get(query,limit,offset,(err,mess)=>{
+            messageDB.get(query,limit,offset,false,(err,mess)=>{
                 if(err)
                     return res.status(500).send({status: 500, message: err.message})
                 if(mess.length > 0){

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment')
 
 var chatroomSchema = mongoose.Schema({
     _id: mongoose.mongo.ObjectID,
@@ -6,7 +7,8 @@ var chatroomSchema = mongoose.Schema({
     users: Array,
     expired: Date,
     createdTime: Date,
-    updatedTime: Date
+    updatedTime: Date,
+    messages : Array
 })
 
 var chatroomModel = mongoose.model("Chatroom", chatroomSchema)
@@ -32,6 +34,6 @@ exports.find = (query,limit,offset,cb)=>{
     }).limit(limit).skip(offset).sort({updatedTime: -1})
 }
 
-exports.update_time = (query, updater, cb) =>{
-
+exports.update_time = (idRoom,cb) =>{
+    chatroomModel.updateOne({_id: idRoom},{updatedTime: moment().format()})
 }
