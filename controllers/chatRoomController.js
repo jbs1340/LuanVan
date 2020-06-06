@@ -27,28 +27,24 @@ exports.create = (req,res)=>{
     })
 }
 
-exports.getMyChatRoom = (req,res)=>{
+exports.getMyChatRoom = async (req,res)=>{
     var currentUser = req.currentUser
     var limit = parseInt(req.query.limit) || 1;
     var offset = parseInt(req.query.offset) || 0;
     var query= {
         "users._id": currentUser._id
     }
-    ChatroomDB.find(query,limit,offset,(err,room)=>{
+    ChatroomDB.find(query,limit,offset,async (err,room)=>{
         if(err)
         return res.status(500).send({status:500, message: err.message})
-    if(room.length > 0) {
-        for(const r of room){
-            messageDB.get({roomID: r._id},1,0,true,(err,mess)=>{
-                if (err) {
-                    return res.status(500).send({status:500, message: err.message})
-                }
-                r.messages = mess
-            })
-            return res.status(200).send({status:200, message:"Created successfully", data:room})
-        } 
-    }
-    else
-        return res.status(404).send({status:404, message:"NOT FOUND",data:[]})
-    })
+        if(room.length > 0) {
+            for(const r of room){
+                await messageDB.get_sync({roomID: r._id},1,0,true).then(mess =>{
+                    r.messages.push(mess[0])
+                })
+            } 
+            return res.status(200).send({status:200, message:"Query successfully", data:room})
+        } else
+            return res.status(404).send({status:404, message:"NOT FOUND",data:[]})
+        })
 }

@@ -31,3 +31,17 @@ exports.get = async (query,limit,offset, reverse,cb)=>{
         }).limit(limit).skip(offset).sort({createdTime: -1})
     }
 }
+
+exports.get_sync = async (query,limit,offset, reverse,)=>{
+    try {
+        if (!reverse) {
+            var message = messageModel.find(query).limit(limit).skip(offset)
+            return message
+        } else {
+            var message = messageModel.find(query).limit(limit).skip(offset).sort({createdTime: -1})
+            return message
+        }
+    } catch (err) {
+        return err
+    }
+}
