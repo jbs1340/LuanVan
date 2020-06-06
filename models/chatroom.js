@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var chatroomSchema = mongoose.Schema({
+    _id: mongoose.mongo.ObjectID,
     name: String,
     users: Array,
     expired: Date,
@@ -28,5 +29,9 @@ exports.find = (query,limit,offset,cb)=>{
     chatroomModel.find(query,(err,room)=>{
         if(err) return cb(err)
         return cb(err,room)
-    }).limit(limit).skip(offset)
+    }).limit(limit).skip(offset).sort({updatedTime: -1})
+}
+
+exports.update_time = (query, updater, cb) =>{
+
 }
