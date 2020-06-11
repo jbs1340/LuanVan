@@ -31,7 +31,8 @@ exports.uploads = (req,res)=>{
     // });
 
     var file = req.body.file || ""
-    var name = req.body.name || "img-"+moment().unix()
+    var name = req.body.name || "img-"+moment().unix()+".jpg"
+    name = "public/" + name
     var realFile = Buffer.from(file,"base64")
     fs.writeFile(name, realFile, (err)=>{
         console.log(realFile)
@@ -48,5 +49,4 @@ exports.uploads = (req,res)=>{
             return res.status(200).send({status:200, url: path , message:"Uploaded !"})
         })
     })
-      // Return ở đây để code không chạy tiếp xuống dưới
     }
