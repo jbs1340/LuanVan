@@ -34,12 +34,21 @@ exports.uploads = (req,res)=>{
     var name = req.body.name || "img-"+moment().unix()
     var realFile = Buffer.from(file,"base64")
     fs.writeFile(name, realFile, (err)=>{
+        console.log(realFile)
         if(err){
             console.log(err)
             return;
         }
+        var newName = moment().unix()+"-"+name
+        var newPath = 'public/uploads/'+ newName
+        fs.rename(name,newPath, (err)=>{
+            if(err){
+                console.log(err)
+                return;
+            }
+            var path = "uploads/"+newName
+            return res.status(200).send({status:200, url: path })
+        })
     })
       // Return ở đây để code không chạy tiếp xuống dưới
-    
-      return res.status(200).send({status:200, data: name})
-}
+    }
