@@ -2,10 +2,12 @@ const jwt = require('jsonwebtoken');
 var UserDB = require("./models/user");
 var ChatroomDB = require("./models/chatroom");
 var MessageDB = require("./models/message");
+var likeDB = require('./models/like')
 var moment = require('moment')
 
 require('dotenv').config();
 exports.socketio = function (socket){
+    
     socket.on("Client-login", (data)=>{
         var verify = jwt.verify(data, process.env.SECRET_KEY,(err,user)=>{
             if(err){
@@ -40,6 +42,7 @@ exports.socketio = function (socket){
         })
         console.log('cur',socket.currentUser)
     })
+    
     socket.on("mess", (data)=>{
         socket.to(socket.roomID).emit('mess', data)
         var message = {
@@ -51,7 +54,7 @@ exports.socketio = function (socket){
             read: [{"_id": socket.currentUser}]
         }
         MessageDB.create(message,(err,mess)=>{
-            if(err)  socket.emit("message-error", {message: err.message, status: failed})
+            if(err)  socket.emit("message-error", {message: err.message, status: "failed"})
         })
         ChatroomDB.update_time(socket.roomID)
       })
@@ -59,4 +62,30 @@ exports.socketio = function (socket){
         socket.disconnect(true);
         console.log(socket.adapter.rooms, socket.id);            
     });
+
+    socket.on("like", (data)=>{
+        var userId = data._id || ""
+        var userName = data.name || ""
+        var userAva = data.avatar || ""
+        var postId  = data.postID || ""
+
+        if(userId == "" || userName == "" || userAva == "" || postId == ""){
+            socket.emit("message-error", {message: "Can not action like", status: failed})
+        } else {
+            var req = {
+                userID : userId,
+                name : userName,
+                avatar: userAva,
+                postID: postId,
+                createdTime: moment().format()
+            }
+            likeDB.like(data,(err,like)=>{
+                if(err){
+                    socket.emit("message-error", {message: err.message, status: "failed"})
+                } else if(!err && like){
+                    socket.emit("message-error", {message: "", status: "OK"})
+                }
+            })
+        }
+    })
 }
