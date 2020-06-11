@@ -36,18 +36,16 @@ exports.uploads = (req,res)=>{
     fs.writeFile(name, realFile, (err)=>{
         console.log(realFile)
         if(err){
-            console.log(err)
-            return;
+            return res.status(400).send({status: 400, url:"", message: err })
         }
         var newName = moment().unix()+"-"+name
         var newPath = 'public/uploads/'+ newName
         fs.rename(name,newPath, (err)=>{
             if(err){
-                console.log(err)
-                return;
+                return res.status(400).send({status: 400, url:"", message: err })
             }
             var path = "uploads/"+newName
-            return res.status(200).send({status:200, url: path })
+            return res.status(200).send({status:200, url: path , message:"Uploaded !"})
         })
     })
       // Return ở đây để code không chạy tiếp xuống dưới
