@@ -16,9 +16,9 @@ exports.socketio = function (socket){
             }
             if(user)
             UserDB.getFromId(user._id,(err,u)=>{
-                if (!u) socket.emit("Change-socketid-failed");
+                if (!u) socket.emit("Change-socketid-failed",{message: "failed"});
                 if(!err && u) {
-                    socket.emit("Change-socketid-sucessfully","OK");
+                    socket.emit("Change-socketid-sucessfully",{message: "OK"});
                 socket.currentUser = u._id
                 }
             }) 
@@ -31,9 +31,9 @@ exports.socketio = function (socket){
         console.log("a",roomID)
         ChatroomDB.findById(roomID,(err,room)=>{
             if(err)
-                socket.broadcast.emit("message-error", err.message)
+                socket.broadcast.emit("message-error",  {message: err.message, status: "failed"})
             if(!room){
-                socket.broadcast.emit("message-error", "NOT_FOUND")
+                socket.broadcast.emit("message-error",  {message: "NOT_FOUND", status: "failed"})
             } else {
                 socket.roomID = roomID
                 socket.join(roomID)

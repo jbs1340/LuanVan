@@ -32,7 +32,7 @@ exports.uploads = (req,res)=>{
 
     var file = req.body.file || ""
     var name = req.body.name || "img-"+moment().unix()
-    var realFile = Buffer.from(img,"base64")
+    var realFile = Buffer.from(file,"base64")
     fs.writeFile(name, realFile, (err)=>{
         if(err){
             console.log(err)
