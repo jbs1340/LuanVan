@@ -18,7 +18,7 @@ exports.socketio = function (socket){
             UserDB.getFromId(user._id,(err,u)=>{
                 if (!u) socket.emit("Change-socketid-failed",{message: "failed"});
                 if(!err && u) {
-                    socket.emit("Change-socketid-sucessfully",{message: "OK"});
+                    socket.emit("is-sucessfully",{message: "OK"});
                 socket.currentUser = u._id
                 }
             }) 
