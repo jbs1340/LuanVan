@@ -7,8 +7,7 @@ var moment = require('moment')
 
 require('dotenv').config();
 exports.socketio = function(socket) {
-    console.log(socket)
-    socket.on("Client-login", (data) => {
+    socket.on("client-login", (data) => {
         console.log(data)
         var verify = jwt.verify(data, process.env.SECRET_KEY, (err, user) => {
             if (err) {
