@@ -44,6 +44,7 @@ exports.socketio = function(socket) {
     })
 
     socket.on("mess", (data) => {
+        console.log(data)
         socket.to(socket.roomID).emit('mess', data)
         var message = {
             createdTime: moment().format(),
@@ -55,6 +56,7 @@ exports.socketio = function(socket) {
         }
         MessageDB.create(message, (err, mess) => {
             if (err) socket.emit("message-error", { message: err.message, status: "failed" })
+            console.log(mess)
         })
         ChatroomDB.update_time(socket.roomID)
     })
