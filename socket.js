@@ -47,8 +47,8 @@ exports.socketio = function(socket) {
         socket.to(socket.roomID).emit('mess', data)
         var message = {
             createdTime: moment().format(),
-            message: data | "",
-            img: "",
+            message: data.content | "",
+            img: data.img | "",
             userID: socket.currentUser,
             roomID: socket.roomID,
             read: [{ "_id": socket.currentUser }]
