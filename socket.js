@@ -44,9 +44,8 @@ exports.socketio = function(socket) {
     })
 
     socket.on("mess", (data) => {
-        socket.to(socket.roomID).emit('mess', data)
         console.log(data.message)
-        var message = {
+        var newMessage = {
             createdTime: moment().format(),
             message: data.message | "",
             img: data.img | "",
@@ -54,12 +53,14 @@ exports.socketio = function(socket) {
             roomID: socket.roomID,
             read: [{ "_id": socket.currentUser }]
         }
-        console.log(message)
-        MessageDB.create(message, (err, mess) => {
+        MessageDB.create(newMessage, (err, mess) => {
             if (err) socket.emit("message-error", { message: err.message, status: "failed" })
             console.log(mess)
+
         })
         ChatroomDB.update_time(socket.roomID)
+
+        socket.to(socket.roomID).emit('mess', data)
     })
     socket.on("Client-disconnect", function() {
         socket.disconnect(true);
