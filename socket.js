@@ -54,6 +54,7 @@ exports.socketio = function(socket) {
             roomID: socket.roomID,
             read: [{ "_id": socket.currentUser }]
         }
+        console.log(message)
         MessageDB.create(message, (err, mess) => {
             if (err) socket.emit("message-error", { message: err.message, status: "failed" })
             console.log(mess)
