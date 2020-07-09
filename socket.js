@@ -44,12 +44,12 @@ exports.socketio = function(socket) {
     })
 
     socket.on("mess", (data) => {
-        var str = data.message | ""
-        var img = data.img | ""
+        var str = data.message || ""
+        var img = data.img || ""
         var newMessage = {
             createdTime: moment().format(),
-            message: str | "",
-            img: img | "",
+            message: str || "",
+            img: img || "",
             userID: socket.currentUser,
             roomID: socket.roomID,
             read: [{ "_id": socket.currentUser }]
