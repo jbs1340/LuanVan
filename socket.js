@@ -6,20 +6,21 @@ var likeDB = require('./models/like')
 var moment = require('moment')
 
 require('dotenv').config();
+
 exports.socketio = function(socket) {
     socket.on("client-login", (data) => {
         console.log(data)
         var verify = jwt.verify(data.token, process.env.SECRET_KEY, (err, user) => {
             if (err) {
                 console.log(err)
-                socket.emit("   ", err.message);
+                socket.emit("message-error", err.message);
             }
             if (user)
                 UserDB.getFromId(user._id, (err, u) => {
-                    if (!u) socket.emit("Change-socketid-failed", { message: "failed" });
+                    if (!u) socket.emit("message-error", { message: "VERIFY_FAIELD", status: "failed" });
                     if (!err && u) {
-                        socket.emit("is-sucessfully", { message: "OK" });
-                        socket.currentUser = u._id
+                        socket.emit("is-successfully", { message: "OK" });
+                        socket.currentUser = u
                     }
                 })
 
@@ -38,30 +39,25 @@ exports.socketio = function(socket) {
                 socket.roomID = roomID
                 socket.join(roomID)
             }
-            console.log("room", socket.roomID)
         })
-        console.log('cur', socket.currentUser)
     })
 
     socket.on("mess", (data) => {
+        socket.to(socket.roomID).emit('mess', data)
         var str = data.message || ""
         var img = data.img || ""
         var newMessage = {
             createdTime: moment().format(),
             message: str || "",
             img: img || "",
-            userID: socket.currentUser,
+            userID: socket.currentUser._id,
             roomID: socket.roomID,
-            read: [{ "_id": socket.currentUser }]
+            read: [{ "_id": socket.currentUser._id, "avatar": socket.currentUser.avatar }]
         }
         MessageDB.create(newMessage, (err, mess) => {
             if (err) socket.emit("message-error", { message: err.message, status: "failed" })
-            console.log(err, mess)
-
         })
         ChatroomDB.update_time(socket.roomID)
-
-        socket.to(socket.roomID).emit('mess', data)
     })
     socket.on("Client-disconnect", function() {
         socket.disconnect(true);
