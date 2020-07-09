@@ -44,18 +44,19 @@ exports.socketio = function(socket) {
     })
 
     socket.on("mess", (data) => {
-        console.log(data.message)
+        var str = data.message | ""
+        var img = data.img | ""
         var newMessage = {
             createdTime: moment().format(),
-            message: data.message | "",
-            img: data.img | "",
+            message: str | "",
+            img: img | "",
             userID: socket.currentUser,
             roomID: socket.roomID,
             read: [{ "_id": socket.currentUser }]
         }
         MessageDB.create(newMessage, (err, mess) => {
             if (err) socket.emit("message-error", { message: err.message, status: "failed" })
-            console.log(mess)
+            console.log(err, mess)
 
         })
         ChatroomDB.update_time(socket.roomID)
