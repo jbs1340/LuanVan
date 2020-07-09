@@ -44,14 +44,12 @@ exports.socketio = function(socket) {
     })
 
     socket.on("mess", (data) => {
-        console.log(data)
         socket.to(socket.roomID).emit('mess', data)
-        var j = JSON.parse(data)
         console.log(data.message)
         var message = {
             createdTime: moment().format(),
-            message: j.message | "",
-            img: j.img | "",
+            message: data.message | "",
+            img: data.img | "",
             userID: socket.currentUser,
             roomID: socket.roomID,
             read: [{ "_id": socket.currentUser }]
