@@ -46,6 +46,7 @@ exports.socketio = function(socket) {
     socket.on("mess", (data) => {
         console.log(data)
         socket.to(socket.roomID).emit('mess', data)
+        JSON.parse(data)
         var message = {
             createdTime: moment().format(),
             message: data.message | "",
