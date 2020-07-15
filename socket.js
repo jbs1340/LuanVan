@@ -22,8 +22,8 @@ exports.socketio = function(socket) {
                         socket.emit("is-successfully", { message: "OK" });
                         socket.currentUser = u
                     }
+                    console.log(socket.currentUser)
                 })
-
         });
     })
 
@@ -61,7 +61,6 @@ exports.socketio = function(socket) {
     })
     socket.on("Client-disconnect", function() {
         socket.disconnect(true);
-        console.log(socket.adapter.rooms, socket.id);
     });
 
     socket.on("like", (data) => {
@@ -71,7 +70,7 @@ exports.socketio = function(socket) {
         var postId = data.postID || ""
 
         if (userId == "" || userName == "" || userAva == "" || postId == "") {
-            socket.emit("message-error", { message: "Can not action like", status: failed })
+            socket.emit("message-error", { message: "Can not action like", status: "failed" })
         } else {
             var req = {
                 userID: userId,
