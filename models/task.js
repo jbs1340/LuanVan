@@ -16,7 +16,9 @@ var taskSchema = mongoose.Schema({
     completedTime: Date
 })
 taskSchema.index({ creatorID: 1 })
+taskSchema.index({ projectID: 1 })
 taskSchema.index({ takenBy: 1 })
+taskSchema.index({ status: 1 })
 var taskModel = mongoose.model("Task", taskSchema)
 
 exports.create = (data, cb) => {

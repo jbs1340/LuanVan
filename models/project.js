@@ -13,7 +13,12 @@ const projectSchema = mongoose.Schema({
     members: Array
 })
 
-projectSchema.index({ code: 1 }, { unique: true })
+projectSchema.index({ name: 1 }, { unique: true })
+projectSchema.index({ "creator._id": 1 })
+projectSchema.index({ deadline: 1 })
+projectSchema.index({ status: 1 })
+projectSchema.index({ members: 1 })
+
 var projectModel = mongoose.model("Project", projectSchema)
 
 exports.create = (data, cb) => {

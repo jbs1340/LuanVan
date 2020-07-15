@@ -9,6 +9,8 @@ var messageSchema = mongoose.Schema({
     read: Array
 })
 
+messageSchema.index({ userID: 1 })
+messageSchema.index({ roomID: 1 })
 var messageModel = mongoose.model("Messages", messageSchema)
 
 exports.create = (data, cb) => {

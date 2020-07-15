@@ -6,8 +6,8 @@ var relationSchema = mongoose.Schema({
     createdTime: Date
 })
 
-relationSchema.index({ mentor: 1 })
-relationSchema.index({ trainee: 1 })
+relationSchema.index({ "mentor._id": 1 })
+relationSchema.index({ "trainee._id": 1 })
 var relationModel = mongoose.model("Relationship", relationSchema)
 
 

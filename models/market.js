@@ -14,6 +14,8 @@ var ItemSchema = mongoose.Schema({
 })
 
 ItemSchema.index({ code: 1 }, { unique: true })
+ItemSchema.index({ isReward: 1 })
+ItemSchema.index({ requirementLevel: 1 })
 var marketModel = mongoose.model("Market", ItemSchema)
 
 exports.create = (data, cb) => {

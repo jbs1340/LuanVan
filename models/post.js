@@ -6,27 +6,31 @@ const postSchema = mongoose.Schema({
     tags: Array,
     hashTags: Array,
     type: String,
-    img:Array,
-    creator : {_id: String, name: String, avatar: String},
+    img: Array,
+    creator: { _id: String, name: String, avatar: String },
     isLiked: Boolean,
-    comments:Array,
+    comments: Array,
     likesTotal: Number
 })
 
-var postModel = mongoose.model('Post',postSchema);
+postSchema.index({ type: 1 })
+postSchema.index({ isLiked: 1 })
+postSchema.index({ "creator._id": 1 })
 
-exports.create = (postData,cb)=>{
-    postModel.create(postData, (err,post)=>{
-        if(err) return cb(err)
-        return cb(null,post)
+var postModel = mongoose.model('Post', postSchema);
+
+exports.create = (postData, cb) => {
+    postModel.create(postData, (err, post) => {
+        if (err) return cb(err)
+        return cb(null, post)
     })
 }
 
-exports.getPosts = (postData,limit,offset,cb)=>{
+exports.getPosts = (postData, limit, offset, cb) => {
     console.log(postData)
-    postModel.find(postData,(err,post )=>{
-        if(err)
+    postModel.find(postData, (err, post) => {
+        if (err)
             return cb(err)
-        return cb(null,post)
-    }).limit(limit).skip(offset).sort({createdTime:-1})
+        return cb(null, post)
+    }).limit(limit).skip(offset).sort({ createdTime: -1 })
 }
