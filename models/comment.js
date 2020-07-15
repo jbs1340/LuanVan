@@ -8,30 +8,31 @@ const commentSchema = mongoose.Schema({
     content: String,
     createdTime: Date
 })
+commentSchema.index({ userID: 1 })
+commentSchema.index({ postID: 1 })
+var commentModel = mongoose.model("Comment", commentSchema)
 
-var commentModel = mongoose.model("Comment",commentSchema)
-
-exports.create = (data,cb)=>{
-        commentModel.create(data).then(cmt =>{
-            cb(null,cmt)
-        }).catch(err =>{
-            cb(err)
-        })
+exports.create = (data, cb) => {
+    commentModel.create(data).then(cmt => {
+        cb(null, cmt)
+    }).catch(err => {
+        cb(err)
+    })
 }
 
-exports.getCommentsByCurrentPost = async (data,cb)=>{
-    try{
-        var comment = commentModel.find(data).limit(100).skip(0).sort({createdTime: -1})
+exports.getCommentsByCurrentPost = async(data, cb) => {
+    try {
+        var comment = commentModel.find(data).limit(100).skip(0).sort({ createdTime: -1 })
         return comment
-    }catch(err){
+    } catch (err) {
         return err
     }
 }
 
-exports.getComments = (data,limit,offset,cb)=>{
-    commentModel.find(data).limit(limit).skip(offset).then(cmt=>{
-        cb(null,cmt)
-    }).catch(err=>{
+exports.getComments = (data, limit, offset, cb) => {
+    commentModel.find(data).limit(limit).skip(offset).then(cmt => {
+        cb(null, cmt)
+    }).catch(err => {
         cb(err)
     })
 }

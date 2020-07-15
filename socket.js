@@ -9,7 +9,6 @@ require('dotenv').config();
 
 exports.socketio = function(socket) {
     socket.on("client-login", (data) => {
-        console.log(data)
         var verify = jwt.verify(data.token, process.env.SECRET_KEY, (err, user) => {
             if (err) {
                 console.log(err)

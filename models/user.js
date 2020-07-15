@@ -26,8 +26,11 @@ const userSchema = mongoose.Schema({
     trainee: Array,
     createdTime: Date
 })
+userSchema.index({ username: 1 })
+userSchema.index({ email: 1 })
 
 var UserModel = mongoose.model("User", userSchema);
+
 exports.create = function(userData, cb) {
     bcrypt.hash(userData.password, 10, function(err, hash) {
         if (err) {

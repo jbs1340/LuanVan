@@ -169,7 +169,6 @@ exports.done = (req, res) => {
                                     if (moment(now).isBefore(deadline)) {
                                         var curCoin = parseInt(u.coin)
                                         var curExperience = parseInt(u.experience)
-                                        var curLevel = parseInt(u.level)
                                         curCoin += bonusCoin
                                         curExperience += bonusExpr * difficulty
                                         userDB.updateUser(u._id, { coin: curCoin, experience: curExperience }, (err, newUser) => {

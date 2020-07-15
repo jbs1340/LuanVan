@@ -15,7 +15,8 @@ var taskSchema = mongoose.Schema({
     creatorID: String,
     completedTime: Date
 })
-
+taskSchema.index({ creatorID: 1 })
+taskSchema.index({ takenBy: 1 })
 var taskModel = mongoose.model("Task", taskSchema)
 
 exports.create = (data, cb) => {
