@@ -22,7 +22,7 @@ exports.like = (req, res) => {
                 return res.status(500).send({ status: 500, message: err.message })
             if (like) {
                 socket.socketio = (socket) => {
-                    socket.emit(usr._id + "_notify", { action: "Like" })
+                    socket.emit("5eb2ede97e56a30024b0e1ce_notify", { action: "Like" })
                 }
                 return res.status(200).send({ status: 200, message: "Liked", data: like })
             }
