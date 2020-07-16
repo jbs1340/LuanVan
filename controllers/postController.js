@@ -23,7 +23,8 @@ exports.create = async(req, res) => {
             creator: user,
             isLiked: false,
             comments: [],
-            likesTotal: 0
+            likesTotal: 0,
+            commentsTotal: 0
         }
 
         postDB.create(data, (err, post) => {
@@ -57,6 +58,10 @@ exports.getPosts = async(req, res) => {
 
                 await likeDB.total({ postID: post._id }, (err, total) => {
                     total ? post.likesTotal = total : post.likesTotal = 0
+                })
+
+                await commentDB.total({ postID: post._id }, (err, total) => {
+                    total ? post.commentsTotal = total : post.commentsTotal = 0
                 })
             }
             return res.status(200).send({ status: 200, message: "Query successfully", data: posts })

@@ -36,3 +36,11 @@ exports.getComments = (data, limit, offset, cb) => {
         cb(err)
     })
 }
+
+exports.total = (data, cb) => {
+    commentModel.count(data, (err, size) => {
+        if (err)
+            return cb(err)
+        return cb(null, size)
+    })
+}

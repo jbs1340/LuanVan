@@ -10,7 +10,8 @@ const postSchema = mongoose.Schema({
     creator: { _id: String, name: String, avatar: String },
     isLiked: Boolean,
     comments: Array,
-    likesTotal: Number
+    likesTotal: Number,
+    commentsTotal: Number
 })
 
 postSchema.index({ type: 1 })
