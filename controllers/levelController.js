@@ -1,44 +1,42 @@
 var userDB = require('../models/user')
 var marketDB = require('../models/market')
 var hubController = require('./hubController')
+var socket = require('../socket')
 
 exports.checkLevel = user => {
-    console.log(user)
     var currentLevel = parseInt(user.level) || 1
-    var nextLevel = 0;
+    var nextLevel = parseInt(currentLevel + 1);
     if (currentLevel == 1) {
         if (user.experience >= 100) {
-            nextLevel++
             currentLevel++
             user.level = currentLevel
             user.power = calPower(currentLevel, 10, 500)
         }
     } else if (currentLevel > 1 && currentLevel < 10) {
-        if (user.experience >= calLevel(currentLevel, 2, 100)) {
-            nextLevel++
+        if (user.experience >= calLevel(nextLevel, 2, 100)) {
             currentLevel++
             user.level = currentLevel
             user.power = calPower(currentLevel, 10, 1000)
         }
     } else if (currentLevel >= 10 && currentLevel < 20) {
-        if (user.experience >= calLevel(currentLevel, 2, 200)) {
-            nextLevel++
+        if (user.experience >= calLevel(nextLevel, 2, 200)) {
             currentLevel++
             user.level = currentLevel
             user.power = calPower(currentLevel, 10, 2000)
         }
     } else if (currentLevel >= 20 && currentLevel < 30) {
-        if (user.experience >= calLevel(currentLevel, 3, 300)) {
-            nextLevel++
+        if (user.experience >= calLevel(nextLevel, 3, 300)) {
             currentLevel++
             user.level = currentLevel
             user.power = calPower(currentLevel, 10, 3500)
         }
     }
 
-    if (nextLevel > 0) {
+    if (currentLevel == nextLevel) {
         userDB.updateUser({ _id: user._id }, user, (err, usr) => {
-
+            socket.socketio = (socket) => {
+                socket.emit(usr._id + "_notify", {})
+            }
         })
         var query = {
             requirementLevel: user.level,

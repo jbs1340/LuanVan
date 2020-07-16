@@ -15,6 +15,7 @@ const projectSchema = mongoose.Schema({
 
 projectSchema.index({ name: 1 }, { unique: true })
 projectSchema.index({ "creator._id": 1 })
+projectSchema.index({ creator: 1 })
 projectSchema.index({ deadline: 1 })
 projectSchema.index({ status: 1 })
 projectSchema.index({ members: 1 })
