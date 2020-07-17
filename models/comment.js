@@ -29,12 +29,20 @@ exports.getCommentsByCurrentPost = async(data, cb) => {
     }
 }
 
-exports.getComments = (data, limit, offset, cb) => {
-    commentModel.find(data).limit(limit).skip(offset).then(cmt => {
-        cb(null, cmt)
-    }).catch(err => {
-        cb(err)
-    })
+exports.getComments = (data, limit, offset, reverse, cb) => {
+    if (reverse) {
+        commentModel.find(data).sort({ createdTime: -1 }).limit(limit).skip(offset).then(cmt => {
+            cb(null, cmt)
+        }).catch(err => {
+            cb(err)
+        })
+    } else {
+        commentModel.find(data).limit(limit).skip(offset).then(cmt => {
+            cb(null, cmt)
+        }).catch(err => {
+            cb(err)
+        })
+    }
 }
 
 exports.total = (data, cb) => {
