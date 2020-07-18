@@ -11,14 +11,34 @@ exports.me = (req, res) => {
     })
 }
 
-exports.getUsersAny = (req, res) => {
+exports.getUsersAnyByUsername = (req, res) => {
     var username = req.query.username || ""
     var limit = parseInt(req.query.limit) || 1;
     var offset = parseInt(req.query.offset) || 0;
-    var filter = req.query
-    if (username != "") {
-        filter.username = { $regex: username + '.*' }
+    var query = {
+        username: { $regex: username + '.*' }
     }
+    userDB.findAny(query, limit, offset, (err, user) => {
+        if (err)
+            return res.status(500).send({ status: 500, message: err.message })
+        if (user.length > 0) {
+            var dataUser = []
+            user.forEach(u => {
+                var newUser = u
+                newUser.password = ""
+                newUser.address = ""
+                dataUser.push(newUser)
+            });
+            return res.status(200).send({ status: 200, message: "Query successfully", data: dataUser })
+        } else
+            return res.status(404).send({ status: 404, message: "NOT FOUND", data: [] })
+    })
+}
+
+exports.getUsersAny = (req, res) => {
+    var query = req.query.q || {}
+    var limit = parseInt(req.query.limit) || 1;
+    var offset = parseInt(req.query.offset) || 0;
 
     userDB.findAny(query, limit, offset, (err, user) => {
         if (err)
