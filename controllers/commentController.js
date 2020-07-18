@@ -34,7 +34,7 @@ exports.getComments = (req, res) => {
     var limit = parseInt(req.query.limit) || 1
     var offset = parseInt(req.query.offset) || 0
     var reverse = (String(req.query.reverse) == "true")
-    var postID = req.query.postID || ""
+    var postID = req.query.postID || ''
 
     commentDB.getComments({ postID: postID }, limit, offset, reverse, (err, cmt) => {
         if (err) {
