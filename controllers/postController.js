@@ -7,6 +7,9 @@ var userDB = require('../models/user')
 exports.create = async(req, res) => {
     var currentUser = req.currentUser;
     var query = req.body;
+    if (query.img.length == undefined) {
+        return res.status(500).send({ status: 500, message: "Image must be array" })
+    }
     userDB.getFromId(currentUser._id, (err, user) => {
         if (err)
             return res.status(500).send({ status: 500, message: err.message })
