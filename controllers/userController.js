@@ -39,8 +39,8 @@ exports.getUsersAny = (req, res) => {
     var query = req.query.q || {}
     var limit = parseInt(req.query.limit) || 1;
     var offset = parseInt(req.query.offset) || 0;
-
-    userDB.findAny(query, limit, offset, (err, user) => {
+    var q = JSON.parse(query)
+    userDB.findAny(q, limit, offset, (err, user) => {
         if (err)
             return res.status(500).send({ status: 500, message: err.message })
         if (user.length > 0) {
