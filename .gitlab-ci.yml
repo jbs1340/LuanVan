@@ -21,14 +21,14 @@ before_script:
   
 test:
     stage: test
-    image: node:latest
+    image: node:10.16.3-alpine
     before_script:
       - mkdir -p gitlab.com/$CI_PROJECT_NAMESPACE
       - cd gitlab.com/$CI_PROJECT_NAMESPACE
       - ln -s $CI_PROJECT_DIR
       - cd $CI_PROJECT_NAME
     script:
-      - npm test
+      - npm test  
     artifacts:
       expire_in: 1 week
       paths:
@@ -52,7 +52,7 @@ test:
       - echo "-----BEGIN CERTIFICATE-----"$'\n'$DOMAIN_CRT$'\n'"-----END CERTIFICATE-----" > "./crt.pem"
       - echo "-----BEGIN PRIVATE KEY-----"$'\n'$DOMAIN_KEY$'\n'"-----END PRIVATE KEY-----" > "./key.pem"
       - export DOCKER_OPTS="--dns=8.8.8.8 --dns=8.8.4.4"
-      - docker build -f $DOCKER_FILE -t $DOCKER_IMAGE:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA -t $DOCKER_IMAGE:$CI_COMMIT_REF_NAME-latest -t $DOCKER_IMAGE:latest --build-arg env=$CI_COMMIT_REF_NAME --build-arg version=$CI_COMMIT_SHA --build-arg config=$ENCODED_CONFIG .
+      - docker build -f $DOCKER_FILE -t $DOCKER_IMAGE:latest --build-arg config=$ENCODED_CONFIG .
       - docker push $DOCKER_IMAGE
     artifacts:
     after_script:
