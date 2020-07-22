@@ -15,11 +15,10 @@ variables:
     EMPLOYEE_REGISTER_CONSUMER: employee-register-consumer
     FOLLOW_CONSUMER: follow-consumer
     PMS_CONSUMER: pms-consumer
-    KUBE_COMPANY_REGISTER_CONSUMER_CONTAINER: company-register-consumer-sha256-1
-    KUBE_EMPLOYEE_REGISTER_CONSUMER_CONTAINER: employee-register-consumer-sha256-1
-    KUBE_FOLLOW_CONSUMER_CONTAINER: follow-consumer-sha256-1
-    KUBE_PMS_CONSUMER_CONTAINER: pms-consumer-sha256-1
-    DEPLOY_TARGET: yuh-service-sha256-1
+    KUBE_COMPANY_REGISTER_CONSUMER_CONTAINER: cert-manager
+    KUBE_EMPLOYEE_REGISTER_CONSUMER_CONTAINER: 	cert-manager-cainjector	
+    KUBE_FOLLOW_CONSUMER_CONTAINER: cert-manager-webhook
+    KUBE_PMS_CONSUMER_CONTAINER: yuh-service
 before_script:
     - echo "GCP_ProjectID $GCP_PROJECT_ID"
     - echo "ProjectName   $CI_PROJECT_NAME"
