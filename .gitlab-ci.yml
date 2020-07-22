@@ -71,7 +71,8 @@ test:
 docker:
     <<: *build-template
     variables:
-      GCP_PROJECT_ID: $GCP_PROJECT_ID
+      GCP_PROJECT_ID: 	bao-luanvan
+      GCP_PROJECT_NAME: yuh
       GCLOUD_SA_JSON: $GCLOUD_SA_JSON
       DOCKER_IMAGE: $REGISTRY_HOST/$GCP_PROJECT_ID/$GCP_PROJECT_NAME/$CI_PROJECT_NAME
       GIT_STRATEGY: none
@@ -82,7 +83,7 @@ docker:
 deploy:
     <<: *deploy-template
     variables:
-      GCP_PROJECT_ID: $GCP_PROJECT_ID
+      GCP_PROJECT_ID: bao-luanvan
       GCLOUD_SA_JSON: $GCLOUD_SA_JSON
       KUBE_CLUSTER: $KUBE_CLUSTER_STG
       DEPLOY_TARGET: $REGISTRY_HOST/$GCP_PROJECT_ID/$GCP_PROJECT_NAME/$CI_PROJECT_NAME:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
