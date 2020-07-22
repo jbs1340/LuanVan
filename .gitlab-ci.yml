@@ -75,8 +75,9 @@ docker-stg:
       DOCKER_IMAGE: $REGISTRY_HOST/$GCP_PROJECT_ID_STG/$GCP_PROJECT_NAME/$CI_PROJECT_NAME
       GIT_STRATEGY: none
       DOCKER_FILE: ./Dockerfile
-      only:
+    only:
         - master
+        
 deploy-stg:
     <<: *deploy-template
     variables:
