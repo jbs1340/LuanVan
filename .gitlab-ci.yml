@@ -53,9 +53,6 @@ test:
       - export DOCKER_OPTS="--dns=8.8.8.8 --dns=8.8.4.4"
       - docker build -f $DOCKER_FILE -t $DOCKER_IMAGE:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA -t $DOCKER_IMAGE:$CI_COMMIT_REF_NAME-latest -t $DOCKER_IMAGE:latest --build-arg env=$CI_COMMIT_REF_NAME --build-arg version=$CI_COMMIT_SHA --build-arg config=$ENCODED_CONFIG .
       - docker push $DOCKER_IMAGE
-    artifacts:
-    after_script:
-      - docker logout https://$REGISTRY_HOST
   
 .deploy-template: &deploy-template
     stage: deploy
@@ -67,7 +64,7 @@ test:
       - gcloud container clusters get-credentials $KUBE_CLUSTER --zone $KUBE_ZONE --project $GCP_PROJECT_ID
       - kubectl set image -n $NAMESPACE deployment $KUBE_DEPLOYMENT $KUBE_CONTAINER=$DEPLOY_TARGET
 
-docker-stg:
+docker:
     <<: *build-template
     variables:
       GCP_PROJECT_ID: $GCP_PROJECT_ID_STG
@@ -78,7 +75,7 @@ docker-stg:
     only:
         - master
 
-deploy-stg:
+deploy:
     <<: *deploy-template
     variables:
       GCP_PROJECT_ID: $GCP_PROJECT_ID_STG
