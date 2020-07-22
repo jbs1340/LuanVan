@@ -11,12 +11,8 @@ variables:
     KUBE_CONTAINER: $CI_PROJECT_NAME-sha256-1
     GIT_DEPTH: 2
     DOCKER_TLS_CERTDIR: ""
-    COMPANY_REGISTER_CONSUMER: company-register-consumer
-    EMPLOYEE_REGISTER_CONSUMER: employee-register-consumer
-    FOLLOW_CONSUMER: follow-consumer
     KUBE_COMPANY_REGISTER_CONSUMER_CONTAINER: yuh-service
-    KUBE_EMPLOYEE_REGISTER_CONSUMER_CONTAINER: 	yuh-service
-    KUBE_FOLLOW_CONSUMER_CONTAINER: yuh-service
+    
 before_script:
     - echo "GCP_ProjectID $GCP_PROJECT_ID"
     - echo "ProjectName   $CI_PROJECT_NAME"
@@ -93,8 +89,6 @@ test:
       - gcloud container clusters get-credentials $KUBE_CLUSTER --zone $KUBE_ZONE --project $GCP_PROJECT_ID
       - kubectl set image -n $NAMESPACE deployment $KUBE_DEPLOYMENT $KUBE_CONTAINER=$DEPLOY_TARGET
 
-
-      
 docker-stg:
     <<: *build-template
     variables:
@@ -103,39 +97,6 @@ docker-stg:
       DOCKER_IMAGE: $REGISTRY_HOST/$GCP_PROJECT_ID_STG/$GCP_PROJECT_NAME/$CI_PROJECT_NAME
       GIT_STRATEGY: none
       DOCKER_FILE: ./main_docker_file
-    only:
-      - stg
-
-docker-company-register-consumer-stg:
-    <<: *build-template
-    variables:
-      GCP_PROJECT_ID: $GCP_PROJECT_ID_STG
-      GCLOUD_SA_JSON: $GCLOUD_SA_JSON
-      DOCKER_IMAGE: $REGISTRY_HOST/$GCP_PROJECT_ID_STG/$GCP_PROJECT_NAME/$COMPANY_REGISTER_CONSUMER
-      GIT_STRATEGY: none
-      DOCKER_FILE: ./company_register_docker_file
-    only:
-      - stg
-
-docker-employee-register-consumer-stg:
-    <<: *build-template
-    variables:
-      GCP_PROJECT_ID: $GCP_PROJECT_ID_STG
-      GCLOUD_SA_JSON: $GCLOUD_SA_JSON
-      DOCKER_IMAGE: $REGISTRY_HOST/$GCP_PROJECT_ID_STG/$GCP_PROJECT_NAME/$EMPLOYEE_REGISTER_CONSUMER
-      GIT_STRATEGY: none
-      DOCKER_FILE: ./employee_register_docker_file
-    only:
-      - stg
-
-docker-follow-consumer-stg:
-    <<: *build-template
-    variables:
-      GCP_PROJECT_ID: $GCP_PROJECT_ID_STG
-      GCLOUD_SA_JSON: $GCLOUD_SA_JSON
-      DOCKER_IMAGE: $REGISTRY_HOST/$GCP_PROJECT_ID_STG/$GCP_PROJECT_NAME/$FOLLOW_CONSUMER
-      GIT_STRATEGY: none
-      DOCKER_FILE: ./follow_docker_file
     only:
       - stg
 
@@ -149,37 +110,3 @@ deploy-stg:
       GIT_STRATEGY: none
     only:
       - stg
-
-deploy-company-register-consumer-stg:
-    <<: *deploy-template
-    variables:
-      GCP_PROJECT_ID: $GCP_PROJECT_ID_STG
-      GCLOUD_SA_JSON: $GCLOUD_SA_JSON
-      KUBE_CLUSTER: $KUBE_CLUSTER_STG
-      DEPLOY_TARGET: $REGISTRY_HOST/$GCP_PROJECT_ID_STG/$GCP_PROJECT_NAME/$COMPANY_REGISTER_CONSUMER:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
-      GIT_STRATEGY: none
-      KUBE_CONTAINER: $KUBE_COMPANY_REGISTER_CONSUMER_CONTAINER
-      KUBE_DEPLOYMENT: $COMPANY_REGISTER_CONSUMER
-
-deploy-employee-register-consumer-stg:
-    <<: *deploy-template
-    variables:
-      GCP_PROJECT_ID: $GCP_PROJECT_ID_STG
-      GCLOUD_SA_JSON: $GCLOUD_SA_JSON
-      KUBE_CLUSTER: $KUBE_CLUSTER_STG
-      DEPLOY_TARGET: $REGISTRY_HOST/$GCP_PROJECT_ID_STG/$GCP_PROJECT_NAME/$EMPLOYEE_REGISTER_CONSUMER:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
-      GIT_STRATEGY: none
-      KUBE_CONTAINER: $KUBE_EMPLOYEE_REGISTER_CONSUMER_CONTAINER
-      KUBE_DEPLOYMENT: $EMPLOYEE_REGISTER_CONSUMER
-
-
-deploy-follow-consumer-stg:
-    <<: *deploy-template
-    variables:
-      GCP_PROJECT_ID: $GCP_PROJECT_ID_STG
-      GCLOUD_SA_JSON: $GCLOUD_SA_JSON
-      KUBE_CLUSTER: $KUBE_CLUSTER_STG
-      DEPLOY_TARGET: $REGISTRY_HOST/$GCP_PROJECT_ID_STG/$GCP_PROJECT_NAME/$FOLLOW_CONSUMER:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
-      GIT_STRATEGY: none
-      KUBE_CONTAINER: $KUBE_FOLLOW_CONSUMER_CONTAINER
-      KUBE_DEPLOYMENT: $FOLLOW_CONSUMER
