@@ -1,0 +1,25 @@
+---
+    apiVersion: "apps/v1"
+    kind: "Deployment"
+    metadata:
+      name: "yuh-service"
+      namespace: "yuh-service-stg"
+      labels:
+        app: "yuh-service"
+    spec:
+      replicas: 3
+      selector:
+        matchLabels:
+          app: "yuh-service"
+      template:
+        metadata:
+          labels:
+            app: "yuh-service"
+        spec:
+          containers:
+          - name: "yuh-service-sha256-1"
+            image: "b27111998/yuh:v1.0"
+            imagePullPolicy: IfNotPresent
+            ports:
+              - containerPort: 80
+    
