@@ -7,7 +7,6 @@ variables:
     REGISTRY_HOST: gcr.io
     KUBE_DEPLOYMENT: $CI_PROJECT_NAME
     KUBE_ZONE: asia-southeast1-b
-    NAMESPACE: $GCP_PROJECT_NAME $CI_COMMIT_REF_NAME
     KUBE_CONTAINER: $CI_PROJECT_NAME-sha256-1
     GIT_DEPTH: 2
     DOCKER_TLS_CERTDIR: ""
@@ -39,26 +38,6 @@ test:
   
   
 .build-template: &build-template
-    stage: build
-    image: docker:18.09.8
-    services:
-      - docker:18.09.8-dind
-    before_script:
-      - export DOCKER_HOST="tcp://docker:2375"  
-      - echo $GCLOUD_SA_JSON > ${HOME}/key.json
-      - docker login -u _json_key --password-stdin https://$REGISTRY_HOST < ${HOME}/key.json
-    script:
-      - export ENCODED_CONFIG=`echo "$CONFIG" | base64 | tr -d '\n'`
-      - echo "-----BEGIN CERTIFICATE-----"$'\n'$DOMAIN_CRT$'\n'"-----END CERTIFICATE-----" > "./crt.pem"
-      - echo "-----BEGIN PRIVATE KEY-----"$'\n'$DOMAIN_KEY$'\n'"-----END PRIVATE KEY-----" > "./key.pem"
-      - export DOCKER_OPTS="--dns=8.8.8.8 --dns=8.8.4.4"
-      - docker build -f $DOCKER_FILE -t $DOCKER_IMAGE:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA -t $DOCKER_IMAGE:$CI_COMMIT_REF_NAME-latest -t $DOCKER_IMAGE:latest --build-arg env=$CI_COMMIT_REF_NAME --build-arg version=$CI_COMMIT_SHA --build-arg config=$ENCODED_CONFIG .
-      - docker push $DOCKER_IMAGE
-    artifacts:
-    after_script:
-      - docker logout $REGISTRY_HOST
-
-.build-company-register-consumer-template: &build-company-register-consumer-template
     stage: build
     image: docker:18.09.8
     services:
@@ -96,9 +75,8 @@ docker-stg:
       DOCKER_IMAGE: $REGISTRY_HOST/$GCP_PROJECT_ID_STG/$GCP_PROJECT_NAME/$CI_PROJECT_NAME
       GIT_STRATEGY: none
       DOCKER_FILE: ./Dockerfile
-    only:
-      - stg
-
+      only:
+        - master
 deploy-stg:
     <<: *deploy-template
     variables:
@@ -108,4 +86,4 @@ deploy-stg:
       DEPLOY_TARGET: $REGISTRY_HOST/$GCP_PROJECT_ID_STG/$GCP_PROJECT_NAME/$CI_PROJECT_NAME:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
       GIT_STRATEGY: none
     only:
-      - stg
+      - master
