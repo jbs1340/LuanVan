@@ -14,11 +14,9 @@ variables:
     COMPANY_REGISTER_CONSUMER: company-register-consumer
     EMPLOYEE_REGISTER_CONSUMER: employee-register-consumer
     FOLLOW_CONSUMER: follow-consumer
-    PMS_CONSUMER: pms-consumer
-    KUBE_COMPANY_REGISTER_CONSUMER_CONTAINER: cert-manager
-    KUBE_EMPLOYEE_REGISTER_CONSUMER_CONTAINER: 	cert-manager-cainjector	
-    KUBE_FOLLOW_CONSUMER_CONTAINER: cert-manager-webhook
-    KUBE_PMS_CONSUMER_CONTAINER: yuh-service
+    KUBE_COMPANY_REGISTER_CONSUMER_CONTAINER: yuh-service
+    KUBE_EMPLOYEE_REGISTER_CONSUMER_CONTAINER: 	yuh-service
+    KUBE_FOLLOW_CONSUMER_CONTAINER: yuh-service
 before_script:
     - echo "GCP_ProjectID $GCP_PROJECT_ID"
     - echo "ProjectName   $CI_PROJECT_NAME"
@@ -141,17 +139,6 @@ docker-follow-consumer-stg:
     only:
       - stg
 
-docker-pms-consumer-stg:
-    <<: *build-template
-    variables:
-      GCP_PROJECT_ID: $GCP_PROJECT_ID_STG
-      GCLOUD_SA_JSON: $GCLOUD_SA_JSON
-      DOCKER_IMAGE: $REGISTRY_HOST/$GCP_PROJECT_ID_STG/$GCP_PROJECT_NAME/$PMS_CONSUMER
-      GIT_STRATEGY: none
-      DOCKER_FILE: ./pms_docker_file
-    only:
-      - stg
-
 deploy-stg:
     <<: *deploy-template
     variables:
@@ -196,14 +183,3 @@ deploy-follow-consumer-stg:
       GIT_STRATEGY: none
       KUBE_CONTAINER: $KUBE_FOLLOW_CONSUMER_CONTAINER
       KUBE_DEPLOYMENT: $FOLLOW_CONSUMER
-
-deploy-pms-consumer-stg:
-  <<: *deploy-template
-  variables:
-    GCP_PROJECT_ID: $GCP_PROJECT_ID_STG
-    GCLOUD_SA_JSON: $GCLOUD_SA_JSON
-    KUBE_CLUSTER: $KUBE_CLUSTER_STG
-    DEPLOY_TARGET: $REGISTRY_HOST/$GCP_PROJECT_ID_STG/$GCP_PROJECT_NAME/$PMS_CONSUMER:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
-    GIT_STRATEGY: none
-    KUBE_CONTAINER: $KUBE_PMS_CONSUMER_CONTAINER
-    KUBE_DEPLOYMENT: $PMS_CONSUMER
