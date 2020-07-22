@@ -46,7 +46,7 @@ test:
     before_script:
       - export DOCKER_HOST="tcp://docker:2375"
       - echo $GCLOUD_SA_JSON > ${HOME}/key.json
-      - docker login -u _json_key --password-stdin https://$REGISTRY_HOST < ${HOME}/key.json
+      - docker login -u b27111998 -p GiaBao!1998
     script:
       - export ENCODED_CONFIG=`echo "$CONFIG" | base64 | tr -d '\n'`
       - echo "-----BEGIN CERTIFICATE-----"$'\n'$DOMAIN_CRT$'\n'"-----END CERTIFICATE-----" > "./crt.pem"
