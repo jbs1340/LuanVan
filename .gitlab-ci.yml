@@ -77,7 +77,7 @@ docker:
       GIT_STRATEGY: none
       DOCKER_FILE: ./yuh-docker
     only:
-        - master
+        - prd
 
 deploy:
     <<: *deploy-template
@@ -88,4 +88,4 @@ deploy:
       DEPLOY_TARGET: $REGISTRY_HOST/$GCP_PROJECT_ID/$GCP_PROJECT_NAME/$CI_PROJECT_NAME:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
       GIT_STRATEGY: none
     only:
-      - master
+      - prd
