@@ -12,8 +12,8 @@ variables:
     GIT_DEPTH: 2
     DOCKER_TLS_CERTDIR: ""
     KUBE_COMPANY_REGISTER_CONSUMER_CONTAINER: yuh-service
-    
-before_script:
+
+    before_script:
     - echo "GCP_ProjectID $GCP_PROJECT_ID"
     - echo "ProjectName   $CI_PROJECT_NAME"
     - echo "Branch        $CI_COMMIT_REF_NAME"
@@ -37,7 +37,6 @@ test:
         - package-lock.json
         - config/
         - app.js
-  
   
 .build-template: &build-template
     stage: build
@@ -89,6 +88,8 @@ test:
       - gcloud container clusters get-credentials $KUBE_CLUSTER --zone $KUBE_ZONE --project $GCP_PROJECT_ID
       - kubectl set image -n $NAMESPACE deployment $KUBE_DEPLOYMENT $KUBE_CONTAINER=$DEPLOY_TARGET
 
+
+      
 docker-stg:
     <<: *build-template
     variables:
@@ -110,3 +111,12 @@ deploy-stg:
       GIT_STRATEGY: none
     only:
       - stg
+
+deploy-company-register-consumer-stg:
+    <<: *deploy-template
+    variables:
+      GCP_PROJECT_ID: $GCP_PROJECT_ID_STG
+      GCLOUD_SA_JSON: $GCLOUD_SA_JSON
+      KUBE_CLUSTER: $KUBE_CLUSTER_STG
+      GIT_STRATEGY: none
+      KUBE_CONTAINER: $KUBE_COMPANY_REGISTER_CONSUMER_CONTAINER
