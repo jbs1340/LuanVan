@@ -9,8 +9,6 @@ variables:
     KUBE_ZONE: asia-southeast1-b
     NAMESPACE: $GCP_PROJECT_NAME-$CI_COMMIT_REF_NAME
     KUBE_CONTAINER: $CI_PROJECT_NAME-sha256-1
-
-    
     GIT_DEPTH: 2
     DOCKER_TLS_CERTDIR: ""
     COMPANY_REGISTER_CONSUMER: company-register-consumer
