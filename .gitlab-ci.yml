@@ -7,7 +7,7 @@ variables:
     REGISTRY_HOST: gcr.io
     KUBE_DEPLOYMENT: $CI_PROJECT_NAME
     KUBE_ZONE: asia-southeast1-b
-    NAMESPACE: $GCP_PROJECT_NAME-$CI_COMMIT_REF_NAME
+    NAMESPACE: $GCP_PROJECT_NAME $CI_COMMIT_REF_NAME
     KUBE_CONTAINER: $CI_PROJECT_NAME-sha256-1
     GIT_DEPTH: 2
     DOCKER_TLS_CERTDIR: ""
@@ -51,7 +51,7 @@ test:
     services:
       - docker:18.09.8-dind
     before_script:
-      - export DOCKER_HOST="tcp://docker:2375"
+      - export DOCKER_HOST="tcp://docker:2375"  
       - echo $GCLOUD_SA_JSON > ${HOME}/key.json
       - docker login -u _json_key --password-stdin https://$REGISTRY_HOST < ${HOME}/key.json
     script:
