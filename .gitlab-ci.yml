@@ -49,6 +49,11 @@ test:
       - docker login -u _json_key --password-stdin https://$REGISTRY_HOST < ${HOME}/key.json
     script:
       - export ENCODED_CONFIG=`echo "$CONFIG" | base64 | tr -d '\n'`
+      - echo "GCP_ProjectID $GCP_PROJECT_ID"
+      - echo "ProjectName   $CI_PROJECT_NAME"
+      - echo "Branch        $CI_COMMIT_REF_NAME"
+      - echo "Commit        $CI_COMMIT_SHA"
+      - echo "Release image $DEPLOY_TARGET"
       - echo "-----BEGIN CERTIFICATE-----"$'\n'$DOMAIN_CRT$'\n'"-----END CERTIFICATE-----" > "./crt.pem"
       - echo "-----BEGIN PRIVATE KEY-----"$'\n'$DOMAIN_KEY$'\n'"-----END PRIVATE KEY-----" > "./key.pem"
       - export DOCKER_OPTS="--dns=8.8.8.8 --dns=8.8.4.4"
