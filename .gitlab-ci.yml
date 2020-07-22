@@ -55,7 +55,7 @@ test:
       - docker push $DOCKER_IMAGE
     artifacts:
     after_script:
-      - docker logout $REGISTRY_HOST
+      - docker logout https://$REGISTRY_HOST
   
 .deploy-template: &deploy-template
     stage: deploy
@@ -77,7 +77,7 @@ docker-stg:
       DOCKER_FILE: ./Dockerfile
     only:
         - master
-        
+
 deploy-stg:
     <<: *deploy-template
     variables:
