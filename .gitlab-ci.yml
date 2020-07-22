@@ -39,18 +39,9 @@ test:
     artifacts:
       expire_in: 1 week
       paths:
-        - main_docker_file
-        - company_register_docker_file
-        - employee_register_docker_file
-        - pms_docker_file
-        - follow_docker_file
         - package.json
         - package-lock.json
         - config/
-        - consumers/
-        - mocks/
-        - src/
-        - config.env
         - app.js
   
   
