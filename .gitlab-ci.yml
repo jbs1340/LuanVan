@@ -11,6 +11,7 @@ variables:
     NAMESPACE: $GCP_PROJECT_NAME-$CI_COMMIT_REF_NAME
     GIT_DEPTH: 2
     DOCKER_TLS_CERTDIR: ""
+    DOCKER_IMAGE: $REGISTRY_HOST/$GCP_PROJECT_ID_STG/$GCP_PROJECT_NAME/$CI_PROJECT_NAME
 
 before_script:
     - echo "GCP_ProjectID $GCP_PROJECT_ID"
@@ -43,8 +44,6 @@ test:
     image: docker:18.09.8
     services:
       - docker:18.09.8-dind
-    variable:
-        DOCKER_IMAGE: $REGISTRY_HOST/$GCP_PROJECT_ID_STG/$GCP_PROJECT_NAME/$CI_PROJECT_NAME
     before_script:
       - export DOCKER_HOST="tcp://docker:2375"
       - echo $GCLOUD_SA_JSON > ${HOME}/key.json
