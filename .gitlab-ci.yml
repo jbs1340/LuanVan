@@ -8,7 +8,7 @@ variables:
     KUBE_DEPLOYMENT: $CI_PROJECT_NAME
     KUBE_ZONE: asia-southeast1-b
     KUBE_CONTAINER: $CI_PROJECT_NAME-sha256-1
-    NAMESPACE: $GCP_PROJECT_NAME-$CI_COMMIT_REF_NAME
+    NAMESPACE: yuh-service-stg
     GIT_DEPTH: 2
     DOCKER_TLS_CERTDIR: ""
 
@@ -92,7 +92,7 @@ deploy:
     variables:
       GCP_PROJECT_ID: bao-luanvan
       GCLOUD_SA_JSON: $GCLOUD_SA_JSON
-      KUBE_CLUSTER: yuh-service-sha256-1
+      KUBE_CLUSTER: cluster-1
       DEPLOY_TARGET: $REGISTRY_HOST/$GCP_PROJECT_ID/$GCP_PROJECT_NAME/$CI_PROJECT_NAME:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
       GIT_STRATEGY: none
     only:
