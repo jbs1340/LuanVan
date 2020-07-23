@@ -7,7 +7,7 @@ variables:
     REGISTRY_HOST: gcr.io
     KUBE_DEPLOYMENT: yuh-service
     KUBE_ZONE: asia-southeast1-b
-    KUBE_CONTAINER: $CI_PROJECT_NAME-sha256-1
+    KUBE_CONTAINER: yuh-service-sha256-1
     NAMESPACE: yuh-service-stg
     GIT_DEPTH: 2
     DOCKER_TLS_CERTDIR: ""
