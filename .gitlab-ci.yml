@@ -45,7 +45,7 @@ test:
       - docker:18.09.8-dind
     before_script:
       - export DOCKER_HOST="tcp://docker:2375"
-      - echo $GCLOUD_SA_JSON > ${HOME}/key.json
+      - echo $GCLOUD_SA_JSON > ${HOME}/key.jsonbuild-template
       - docker login -u _json_key --password-stdin https://$REGISTRY_HOST < ${HOME}/key.json
     script:
       - export ENCODED_CONFIG=`echo "$CONFIG" | base64 | tr -d '\n'`
@@ -75,7 +75,6 @@ docker:
       GCLOUD_SA_JSON: $GCLOUD_SA_JSON
       DOCKER_IMAGE: $REGISTRY_HOST/$GCP_PROJECT_ID/$GCP_PROJECT_NAME/$CI_PROJECT_NAME
       GIT_STRATEGY: none
-      DOCKER_FILE: Dockerfile
     only:
         - master
 
