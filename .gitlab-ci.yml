@@ -35,6 +35,12 @@ test:
         - package.json
         - package-lock.json
         - config/
+        - controllers/
+        - models/
+        - bin/
+        - routes/
+        - .env
+        - socket.js
         - app.js
   
   
