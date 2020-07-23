@@ -3,7 +3,7 @@ stages:
     - build
     - deploy
   
-variables:
+variables: 
     REGISTRY_HOST: gcr.io
     KUBE_DEPLOYMENT: yuh-service
     KUBE_ZONE: asia-southeast1-b
