@@ -32,6 +32,7 @@ test:
     artifacts:
       expire_in: 1 week
       paths:
+        - yuh-docker
         - package.json
         - package-lock.json
         - config/
