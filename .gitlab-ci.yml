@@ -84,7 +84,7 @@ docker:
       DOCKER_IMAGE: $REGISTRY_HOST/$GCP_PROJECT_ID/$GCP_PROJECT_NAME/$CI_PROJECT_NAME
       GIT_STRATEGY: none
       DOCKER_FILE: ./yuh-docker
-    only:
+    only: 
         - prd
 
 deploy:
