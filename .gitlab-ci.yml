@@ -5,7 +5,7 @@ stages:
   
 variables:
     REGISTRY_HOST: gcr.io
-    KUBE_DEPLOYMENT: $CI_PROJECT_NAME
+    KUBE_DEPLOYMENT: yuh-service
     KUBE_ZONE: asia-southeast1-b
     KUBE_CONTAINER: $CI_PROJECT_NAME-sha256-1
     NAMESPACE: yuh-service-stg
