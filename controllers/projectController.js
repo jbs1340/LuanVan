@@ -6,7 +6,6 @@ var taskDB = require('../models/task')
 exports.create = (req, res) => {
     var currentUser = req.currentUser
     var deadline = req.body.deadline || ""
-    console.log(currentUser)
     var query = req.body
     if (!query.name || deadline == "" || !moment(deadline).isValid()) {
         return res.status(400).send({ status: 400, message: "Input invalid. Must have name is String and deadline is Date" })
@@ -31,7 +30,6 @@ exports.create = (req, res) => {
                     projectDB.create(data, (err, proj) => {
                         if (err)
                             return res.status(500).send({ status: 500, message: err.message })
-                        console.log(proj)
                         if (proj)
                             return res.status(200).send({ status: 200, message: "Tạo dự án thành công", data: proj })
                     })
@@ -114,7 +112,6 @@ exports.updateMembers = (req, res) => {
         var dataQuery = {
             _id: projectID
         }
-        console.log(members)
         var dataUpdate = {
             members: members
         }
@@ -162,7 +159,6 @@ exports.getProjectByID = (req, res) => {
         if (err)
             return res.status(500).send({ status: 500, message: err.message })
         if (project) {
-            console.log(project)
             if (project.creator._id == currentUser._id ||
                 project.members.findIndex(i => i._id == currentUser._id) !== -1) {
                 return res.status(200).send({ status: 200, message: "Query successfully", data: project })

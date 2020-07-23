@@ -40,7 +40,6 @@ exports.isLiked = async(data) => {
 
 exports.unLike = (data, cb) => {
     likeModel.deleteMany(data, (err, unLike) => {
-        console.log(err, unLike)
         if (err) return cb(err)
         return cb(null, unLike)
     })

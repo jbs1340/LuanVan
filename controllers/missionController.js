@@ -97,7 +97,6 @@ exports.getBy = (req, res) => {
             { "target.position": user.position },
             { target: null }
         ]
-        console.log(req.query.q)
         missionDB.get(query, limit, offset, (err, missions) => {
             if (err)
                 return res.status(500).send({ status: 500, message: err.message })
@@ -136,7 +135,6 @@ exports.done = async(req, res) => {
                 completedTime: moment().format()
             }
             await missionDB.done(data, async(err, m) => {
-                console.log(1)
                 if (err)
                     return res.status(500).send({ status: 500, message: err.message })
                 if (m) {
@@ -144,7 +142,6 @@ exports.done = async(req, res) => {
                         if (err)
                             return res.status(500).send({ status: 500, message: err.message })
                         if (curMission.length > 0) {
-                            console.log(curMission)
                             var bonusCoin = curMission[0].coin
                             var bonusExperience = curMission[0].experience
                             await userDB.getFromId(currentUser._id, async(err, user) => {

@@ -28,7 +28,6 @@ exports.create = (postData, cb) => {
 }
 
 exports.getPosts = (postData, limit, offset, cb) => {
-    console.log(postData)
     postModel.find(postData, (err, post) => {
         if (err)
             return cb(err)

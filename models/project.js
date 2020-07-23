@@ -43,7 +43,6 @@ exports.getMyProjectsIsActive = (_id, limit, offset, cb) => {
 
 exports.getMyProjects = (userID, limit, offset, cb) => {
     projectModel.find({ "creator._id": userID }, (err, project) => {
-            console.log(project, err)
             return cb(err, project)
         }).limit(limit).skip(offset)
         .sort({ deadline: 1 })
@@ -85,7 +84,6 @@ exports.getBy = async(query, limit, offset, cb) => {
 
 exports.getByID = (id, cb) => {
     projectModel.findById(id, (err, project) => {
-        console.log(project)
         if (err) return cb(err)
         return cb(err, project)
     })

@@ -21,14 +21,12 @@ exports.socketio = function(socket) {
                         socket.emit("is-successfully", { message: "OK" });
                         socket.currentUser = u
                     }
-                    console.log(socket.currentUser)
                 })
         });
     })
 
     socket.on('Chat', (data) => {
         var roomID = data.roomID || ""
-        console.log("a", roomID)
         ChatroomDB.findById(roomID, (err, room) => {
             if (err)
                 socket.broadcast.emit("message-error", { message: err.message, status: "failed" })

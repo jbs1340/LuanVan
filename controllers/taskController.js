@@ -89,7 +89,7 @@ exports.addMembers = (req, res) => {
         query.takenBy.forEach(mem => {
             members.push(mem)
         });
-        console.log(members)
+
         var dataUpdate = {
             takenBy: members
         }

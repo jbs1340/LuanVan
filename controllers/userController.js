@@ -3,7 +3,7 @@ var moment = require('moment')
 
 exports.me = (req, res) => {
     var currentUser = req.currentUser
-    console.log(req.currentUser)
+
     userDB.getFromId(currentUser, (err, user) => {
         if (user)
             return res.status(200).send({ status: 200, message: "Query successfully", data: user })

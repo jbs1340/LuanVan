@@ -38,7 +38,6 @@ exports.unLike = (req, res) => {
         postID: req.query.postID,
     }
     likeDB.unLike(data, (err, like) => {
-        console.log(err, like)
         if (err)
             return res.status(500).send({ status: 500, message: err })
         if (like)

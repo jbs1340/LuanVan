@@ -2,7 +2,7 @@ var fs = require("fs");
 var formidable = require("formidable");
 var moment = require('moment')
 
-exports.uploads = (req,res)=>{
+exports.uploads = (req, res) => {
     // let form = new formidable.IncomingForm();
     // form.uploadDir = "public/uploads/"
     // form.parse(req, (err, fields, files) => {
@@ -31,21 +31,21 @@ exports.uploads = (req,res)=>{
     // });
 
     var file = req.body.file || ""
-    var name = req.body.name || "img-"+moment().unix()+".jpg"
-    var realFile = Buffer.from(file,"base64")
-    fs.writeFile("public/"+name, realFile, (err)=>{
-        console.log(realFile)
-        if(err){
-            return res.status(400).send({status: 400, url:"", message: err })
+    var name = req.body.name || "img-" + moment().unix() + ".jpg"
+    var realFile = Buffer.from(file, "base64")
+    fs.writeFile("public/" + name, realFile, (err) => {
+
+        if (err) {
+            return res.status(400).send({ status: 400, url: "", message: err })
         }
-        var newName = moment().unix()+"-"+name
-        var newPath = 'public/uploads/'+ newName
-        fs.rename("public/"+name,newPath, (err)=>{
-            if(err){
-                return res.status(400).send({status: 400, url:"", message: err })
+        var newName = moment().unix() + "-" + name
+        var newPath = 'public/uploads/' + newName
+        fs.rename("public/" + name, newPath, (err) => {
+            if (err) {
+                return res.status(400).send({ status: 400, url: "", message: err })
             }
-            var path = "uploads/"+newName
-            return res.status(200).send({status:200, url: path , message:"Uploaded !"})
+            var path = "uploads/" + newName
+            return res.status(200).send({ status: 200, url: path, message: "Uploaded !" })
         })
     })
-    }
+}
