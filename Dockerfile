@@ -20,4 +20,5 @@ RUN npm install
 COPY . .
 
 EXPOSE 80
-CMD ["npm", "run", "start"]
+RUN npm run create-env
+CMD ["npm", "run","start"]

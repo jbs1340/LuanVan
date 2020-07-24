@@ -6,6 +6,7 @@
         "node": "11.10.0"
     },
     "scripts": {
+        "create-env": "printenv > .env",
         "start": "node ./bin/www"
     },
     "dependencies": {
