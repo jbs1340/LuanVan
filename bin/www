@@ -10,7 +10,7 @@ var debug = require('debug')('tutsplus-library:server');
 var http = require('http');
 var axios = require('axios')
 var moment = require('moment')
-const version = moment.unix()
+const version = moment.now().unix()
     /**
      * Get port from environment and store in Express.
      */
@@ -36,6 +36,7 @@ io.on('connection', socket.socketio);
  */
 console.log("Port: " + port)
 axios.post(`http://api.telegram.org/bot1319027140:AAEC7QwlZRh_Vbygv352GtLwmc1gDa5a2a0/sendMessage?chat_id=-1001200490767&text=Start service YUH successfully version: ${version}`)
+
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);

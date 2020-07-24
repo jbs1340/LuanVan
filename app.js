@@ -25,6 +25,7 @@ var tankinh = require('./routes/tankinh')
 var hub = require('./routes/hub')
 const passport = require('passport');
 const mongoose = require('mongoose');
+var axios = require('axios')
 require('dotenv').config();
 
 require('./config/passport')(passport);
@@ -36,6 +37,11 @@ mongoose.connect(
     process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopology: true },
     (e) => e == null ? console.log("Connected DB") : console.log(e.message)
 );
+
+process.on('uncaughtException', (err, origin) => {
+    console.log("Error: " + err)
+    axios.post(`http://api.telegram.org/bot1319027140:AAEC7QwlZRh_Vbygv352GtLwmc1gDa5a2a0/sendMessage?chat_id=-1001200490767&text=Crashed ${err}`)
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
