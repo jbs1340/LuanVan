@@ -32,7 +32,7 @@ test:
     artifacts:
       expire_in: 1 week
       paths:
-        - yuh-docker
+        - Dockerfile
         - package.json
         - package-lock.json
         - config/
@@ -83,7 +83,7 @@ docker:
       GCLOUD_SA_JSON: $GCLOUD_SA_JSON
       DOCKER_IMAGE: $REGISTRY_HOST/$GCP_PROJECT_ID/$GCP_PROJECT_NAME/$CI_PROJECT_NAME
       GIT_STRATEGY: none
-      DOCKER_FILE: ./yuh-docker
+      DOCKER_FILE: ./Dockerfile
     only: 
         - master
 
