@@ -10,7 +10,7 @@ var debug = require('debug')('tutsplus-library:server');
 var http = require('http');
 var axios = require('axios')
 var moment = require('moment')
-const version = moment.now().unix()
+const version = moment.now()
     /**
      * Get port from environment and store in Express.
      */
