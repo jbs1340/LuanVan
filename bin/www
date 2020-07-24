@@ -11,9 +11,11 @@ var http = require('http');
 var axios = require('axios')
 var moment = require('moment')
 const version = moment.now()
-    /**
-     * Get port from environment and store in Express.
-     */
+require('dotenv').config();
+
+/**
+ * Get port from environment and store in Express.
+ */
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
@@ -35,7 +37,7 @@ io.on('connection', socket.socketio);
  * Listen on provided port, on all network interfaces.
  */
 console.log("Port: " + port)
-axios.post(`http://api.telegram.org/bot1319027140:AAEC7QwlZRh_Vbygv352GtLwmc1gDa5a2a0/sendMessage?chat_id=-1001200490767&text=Start service YUH successfully version: ${version}`)
+axios.post(`http://api.telegram.org/bot1319027140:AAEC7QwlZRh_Vbygv352GtLwmc1gDa5a2a0/sendMessage?chat_id=-1001200490767&text=Start service YUH successfully version: ${version}-${process.env.CI_COMMIT_SHA || "LOCAL"}`)
 
 server.listen(port);
 server.on('error', onError);
