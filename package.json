@@ -6,7 +6,7 @@
         "node": "11.10.0"
     },
     "scripts": {
-        "start": "ENV=PRD & supervisor ./bin/www"
+        "start": "supervisor ./bin/www"
     },
     "dependencies": {
         "axios": "^0.19.2",
