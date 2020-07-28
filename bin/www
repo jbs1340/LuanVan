@@ -10,7 +10,7 @@ var debug = require('debug')('tutsplus-library:server');
 var http = require('http');
 var axios = require('axios')
 var moment = require('moment')
-const now = moment.now()
+const now = moment().format()
 require('dotenv').config();
 
 /**
