@@ -10,7 +10,7 @@ var debug = require('debug')('tutsplus-library:server');
 var http = require('http');
 var axios = require('axios')
 var moment = require('moment')
-const version = moment.now()
+const now = moment.now()
 require('dotenv').config();
 
 /**
@@ -37,7 +37,7 @@ io.on('connection', socket.socketio);
  * Listen on provided port, on all network interfaces.
  */
 console.log("Port: " + port)
-axios.post(`http://api.telegram.org/bot1319027140:AAEC7QwlZRh_Vbygv352GtLwmc1gDa5a2a0/sendMessage?chat_id=-1001200490767&text=Start service YUH successfully version: ${version}-${process.env.HOSTNAME || "LOCAL"}`)
+axios.post(`http://api.telegram.org/bot1319027140:AAEC7QwlZRh_Vbygv352GtLwmc1gDa5a2a0/sendMessage?chat_id=-1001200490767&text=Start service YUH successfully version: ${process.env.HOSTNAME || "LOCAL"} at ${now}`)
 
 server.listen(port);
 server.on('error', onError);
