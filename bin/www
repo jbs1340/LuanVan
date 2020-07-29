@@ -30,7 +30,7 @@ var server = http.createServer(app);
 /**
  * Config socket
  */
-var io = require('socket.io').listen(server)
+var io = require('socket.io').listen(8080)
 io.on('connection', socket.socketio);
 
 /**
