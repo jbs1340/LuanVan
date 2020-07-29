@@ -19,13 +19,14 @@ require('dotenv').config();
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+app.set('ws', 8080)
 
 /**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
-var server2 = http.createServer(app);
+var server2 = http.createServer(app.get('ws'));
 
 /**
  * Config socket
