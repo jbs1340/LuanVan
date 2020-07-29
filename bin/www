@@ -6,10 +6,8 @@
 
 var app = require('../app');
 var socket = require('../socket');
-var debug = require('debug')('httpssetuid');
-var fs = require('fs');
+var debug = require('debug')('tutsplus-library:server');
 var http = require('http');
-var https = require('https')
 var axios = require('axios')
 var moment = require('moment')
 const now = moment().format()
@@ -19,29 +17,20 @@ require('dotenv').config();
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.HTTP_PORT || '3000');
-app.set('http_port', process.env.HTTP_PORT || '3000')
-app.set('https_port', process.env.HTTPS_PORT || 443)
-    /**
-     * Create HTTP server.
-     */
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
 
-var httpServer = http.createServer(app);
+/**
+ * Create HTTP server.
+ */
 
-var opts = {
-
-};
-
-var httpsServer = https.createServer(opts, app);
+var server = http.createServer(app);
 
 
 /**
  * Config socket
  */
-var io = require('socket.io')
-io.attach(httpServer)
-io.attach(httpsServer)
-
+var io = require('socket.io').listen(server)
 io.on('connection', socket.socketio);
 
 /**
@@ -50,10 +39,9 @@ io.on('connection', socket.socketio);
 console.log("Port: " + port)
 axios.post(`http://api.telegram.org/bot1319027140:AAEC7QwlZRh_Vbygv352GtLwmc1gDa5a2a0/sendMessage?chat_id=-1001200490767&text=Start service YUH successfully version: ${process.env.HOSTNAME || "LOCAL"} at ${now}`)
 
-httpServer.listen(app.get('http_port'));
-httpsServer.listen(app.get('https_port'))
-httpServer.on('error', onError);
-httpServer.on('listening', onListening);
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
