@@ -6,7 +6,8 @@
 
 var app = require('../app');
 var socket = require('../socket');
-var debug = require('debug')('tutsplus-library:server');
+var debug = require('debug')('httpssetuid');
+var fs = require('fs');
 var http = require('http');
 var https = require('https')
 var axios = require('axios')
@@ -25,13 +26,22 @@ app.set('https_port', process.env.HTTPS_PORT || 443)
      * Create HTTP server.
      */
 
-var server = http.createServer(app);
+var httpServer = http.createServer(app);
+
+var opts = {
+    pfx: fs.readFileSync('httpssetuid.pfx')
+};
+
+var httpsServer = https.createServer(opts, app);
 
 
 /**
  * Config socket
  */
-var io = require('socket.io').listen(server)
+var io = require('socket.io')
+io.attach(httpServer)
+io.attach(httpsServer)
+
 io.on('connection', socket.socketio);
 
 /**
@@ -40,9 +50,10 @@ io.on('connection', socket.socketio);
 console.log("Port: " + port)
 axios.post(`http://api.telegram.org/bot1319027140:AAEC7QwlZRh_Vbygv352GtLwmc1gDa5a2a0/sendMessage?chat_id=-1001200490767&text=Start service YUH successfully version: ${process.env.HOSTNAME || "LOCAL"} at ${now}`)
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+httpServer.listen(app.get('http_port'));
+httpsServer.listen(app.get('https_port'))
+httpServer.on('error', onError);
+httpServer.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
