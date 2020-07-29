@@ -29,7 +29,7 @@ app.set('https_port', process.env.HTTPS_PORT || 443)
 var httpServer = http.createServer(app);
 
 var opts = {
-    pfx: fs.readFileSync('httpssetuid.pfx')
+
 };
 
 var httpsServer = https.createServer(opts, app);
