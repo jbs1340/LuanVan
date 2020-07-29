@@ -25,12 +25,12 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-
+var server2 = http.createServer(app);
 
 /**
  * Config socket
  */
-var io = require('socket.io').listen(8080)
+var io = require('socket.io').listen(server2)
 io.on('connection', socket.socketio);
 
 /**
