@@ -31,7 +31,7 @@ var server = http.createServer(app);
  * Config socket
  */
 var io = require('socket.io')(server)
-console.log(io)
+
 io.on('connection', socket.socketio);
 
 /**
