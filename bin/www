@@ -30,8 +30,7 @@ var server = http.createServer(app);
 /**
  * Config socket
  */
-var io = require('socket.io')(server, { path: '/socket.io' })
-    // io.set('transports', ['websocket']);
+var io = require('socket.io').listen(server, { path: '/socket' })
 io.on('connection', socket.socketio);
 
 /**
