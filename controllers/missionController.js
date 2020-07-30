@@ -31,9 +31,9 @@ exports.create = (req, res) => {
             query.creator = user
             query.createdTime = moment().format()
             if (moment().isBefore(deadline)) {
-                data.outOfDate = false
+                query.outOfDate = false
             } else {
-                data.outOfDate = true
+                query.outOfDate = true
             }
             missionDB.create(query, (err, mission) => {
                 if (err)
