@@ -7,27 +7,27 @@ var notifySchema = mongoose.Schema({
     isTag: Boolean,
     postId: String,
     title: String,
-    userAction: {_id: String, name: String, avatar: String},
+    userAction: { _id: String, name: String, avatar: String },
     isRead: Boolean,
     createdTime: Date
 })
 
-var notifyModel = mongoose.model("Notify",notifySchema)
+var notifyModel = mongoose.model("Notify", notifySchema)
 
-exports.create = (data,cb)=>{
-    notifyModel.create(data,(err,notis)=>{
-        return cb(err,notis)
+exports.create = (data, cb) => {
+    notifyModel.create(data, (err, notis) => {
+        return cb(err, notis)
     })
 }
 
-exports.getAll = (limit,offset,reverse,cb)=>{
-    if (!reverse){
-        notifyModel.find({},(err,notis)=>{
-            return cb(err,notis)
+exports.getAny = (query, limit, offset, reverse, cb) => {
+    if (!reverse) {
+        notifyModel.find(query, (err, notis) => {
+            return cb(err, notis)
         }).limit(limit).offset(offset)
     } else {
-        notifyModel.find({},(err,notis)=>{
+        notifyModel.find(query, (err, notis) => {
             return cb(err, notis)
-        }).limit(limit).offset(offset).sort({createdTime: -1})
+        }).limit(limit).offset(offset).sort({ createdTime: -1 })
     }
 }
