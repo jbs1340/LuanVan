@@ -40,7 +40,7 @@ exports.create = (req, res) => {
 exports.getAny = (req, res) => {
     var limit = parseInt(req.query.limit) || 1
     var offset = parseInt(req.query.offset) || 0
-    var q = JSON.parse(req.query)
+    var q = JSON.parse(req.query.q)
 
     BureauDB.getAny(q, limit, offset, (err, bureau) => {
         if (err)
