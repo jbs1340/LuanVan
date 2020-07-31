@@ -86,7 +86,7 @@ exports.socketio = function(socket) {
         }
     })
 
-    socket.on("connection", mess => {
+    socket.on("connect", mess => {
         console.log("OK!")
         console.log(mess)
     })
