@@ -51,7 +51,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.set('public', path.join(__dirname, 'public'));
+process.env.PUBLIC_DIR = path.join(__dirname, 'public')
 app.use(express.static(path.join(__dirname, 'public')));
 
 // các cài đặt cần thiết cho passport
