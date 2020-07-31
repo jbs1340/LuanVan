@@ -1,8 +1,6 @@
 var fs = require("fs");
 var formidable = require("formidable");
 var moment = require('moment')
-var path = require('path');
-var app = require('../app')
 
 exports.uploads = (req, res) => {
     // let form = new formidable.IncomingForm();
@@ -36,14 +34,14 @@ exports.uploads = (req, res) => {
     var name = req.body.name || "img-" + moment().unix() + ".jpg"
     var realFile = Buffer.from(file, "base64")
         // console.log(file)
-    fs.writeFile(app.get("public") + name, realFile, (err) => {
+    fs.writeFile("../public" + name, realFile, (err) => {
 
         if (err) {
             return res.status(400).send({ status: 400, url: "", message: err })
         }
         var newName = moment().unix() + "-" + name
-        var newPath = 'public/uploads/' + newName
-        fs.rename("public/" + name, newPath, (err) => {
+        var newPath = '../public/uploads/' + newName
+        fs.rename("../public/" + name, newPath, (err) => {
             if (err) {
                 return res.status(400).send({ status: 400, url: "", message: err })
             }
