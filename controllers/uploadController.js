@@ -41,7 +41,7 @@ exports.uploads = (req, res) => {
             return res.status(400).send({ status: 400, url: "", message: err })
         }
         var newName = moment().unix() + "-" + name
-        var newPath = 'public/uploads/' + newName
+        var newPath = '../public/uploads/' + newName
         fs.rename(path.dirname("../public") + name, newPath, (err) => {
             if (err) {
                 return res.status(400).send({ status: 400, url: "", message: err })
