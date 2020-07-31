@@ -1,4 +1,5 @@
 var express = require('express');
+var compression = require("compression")
 var cors = require('cors')
 var path = require('path');
 var logger = require('morgan');
@@ -47,6 +48,7 @@ process.on('uncaughtException', (err, origin) => {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
+app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
