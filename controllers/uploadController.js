@@ -36,14 +36,14 @@ exports.uploads = (req, res) => {
     var name = req.body.name || "img-" + moment().unix() + ".jpg"
     var realFile = Buffer.from(file, "base64")
         // console.log(file)
-    fs.writeFile(process.env.PUBLIC_DIR + name, realFile, (err) => {
+    fs.writeFile(process.env.PUBLIC_DIR + "/" + name, realFile, (err) => {
 
         if (err) {
             return res.status(400).send({ status: 400, url: "", message: err })
         }
         var newName = moment().unix() + "-" + name
         var newPath = process.env.PUBLIC_DIR + '/uploads/' + newName
-        fs.rename(process.env.PUBLIC_DIR + name, newPath, (err) => {
+        fs.rename(process.env.PUBLIC_DIR + "/" + name, newPath, (err) => {
             if (err) {
                 return res.status(400).send({ status: 400, url: "", message: err })
             }
