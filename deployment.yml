@@ -2,22 +2,22 @@
     apiVersion: "apps/v1"
     kind: "Deployment"
     metadata:
-      name: "yuh-service"
+      name: "yuh-social"
       namespace: "yuh-service-stg"
       labels:
-        app: "yuh-service"
+        app: "yuh-social"
     spec:
       replicas: 3
       selector:
         matchLabels:
-          app: "yuh-service"
+          app: "yuh-social"
       template:
         metadata:
           labels:
-            app: "yuh-service"
+            app: "yuh-social"
         spec:
           containers:
-          - name: "yuh-service-sha256-1"
+          - name: "yuh-social-sha256-1"
             image: "b27111998/yuh:v1.0"
             imagePullPolicy: IfNotPresent
             ports:
