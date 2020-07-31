@@ -15,7 +15,7 @@ exports.create = (req, res) => {
     }
     var msg = ''
 
-    if (data.member.length == 0 || data.chef == "") {
+    if (data.members.length == 0 || data.chef == "") {
         return res.status(500).send({ message: "Thiếu thông tin" });
     }
 
