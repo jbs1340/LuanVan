@@ -5,7 +5,7 @@ const { query } = require("express")
 exports.create = (req, res) => {
     var query = req.body
     var data = {
-        members: query.member || [],
+        members: query.members || [],
         chef: query.chef || "",
         name: query.name || "",
         totalPower: 0,
