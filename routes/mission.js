@@ -10,4 +10,7 @@ router.get('/my_logs', authController.verifyToken, missionController.getMissions
 router.get('/by_date', authController.verifyToken, missionController.filter_by_date)
 router.put('/done', authController.verifyToken, missionController.done)
 
+router.post('/verify_jobs', missionController.create_verify_job)
+router.get('/verify_jobs', authController.verifyToken, missionController.find_funcs)
+
 module.exports = router

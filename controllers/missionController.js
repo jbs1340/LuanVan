@@ -213,7 +213,7 @@ exports.getMissionsLogCurrentUser = (req, res) => {
     var missionId = req.query.missionID || ""
     var limit = parseInt(req.query.limit) || 1;
     var offset = parseInt(req.query.offset) || 0;
-    console.log(currentUser._id)
+
     if (missionId == "") {
         return res.status(400).send({ status: 400, message: "MISSING MISSION ID" })
     }
@@ -230,6 +230,50 @@ exports.getMissionsLogCurrentUser = (req, res) => {
             return res.status(200).send({ status: 200, message: "Query successfully", data: log })
         } else {
             return res.status(400).send({ status: 404, message: "NOT_FOUND", data: [] })
+        }
+    })
+}
+
+exports.create_verify_job = (req, res) => {
+    var label = req.body.label || ""
+    var description = req.body.description || ""
+
+    if (label == "") {
+        return res.status(400).send({ status: 400, message: "MISSING LABEL" })
+    }
+
+    var data = {
+        label: label,
+        description: description
+    }
+
+    missionDB.create_function(data, (err, func) => {
+        if (err)
+            return res.status(500).send({ status: 500, message: err.message })
+        if (func) {
+            return res.status(200).send({ status: 200, message: "Created successfully", data: func })
+        } else {
+            return res.status(400).send({ status: 400, message: "Cannot create", data: [] })
+        }
+    })
+}
+
+exports.find_funcs = (req, res) => {
+    var label = req.query.label.replace(/\"/g, "") || ""
+    var limit = parseInt(req.query.limit) || 1;
+    var offset = parseInt(req.query.offset) || 0;
+
+    var query = {
+        label: { $regex: label + ".*" }
+    }
+
+    missionDB.get_funcs(query, limit, offset, (err, func) => {
+        if (err)
+            return res.status(500).send({ status: 500, message: err.message })
+        if (func.length > 0) {
+            return res.status(200).send({ status: 200, message: "Query successfully", data: func })
+        } else {
+            return res.status(400).send({ status: 400, message: "Not found", data: [] })
         }
     })
 }
