@@ -32,11 +32,11 @@ exports.add = (req, res) => {
         isReward: isReward
     }
 
-    marketDB.create(data, (err, data) => {
+    marketDB.create(data, (err, item) => {
         if (err)
             return res.status(400).send({ status: 400, message: err.message })
-        if (data) {
-            return res.status(200).send({ status: 200, message: "Created successfully", data: data })
+        if (item) {
+            return res.status(200).send({ status: 200, message: "Created successfully", data: item })
         } else {
             return res.status(400).send({ status: 400, message: "Cannot add this item" })
         }

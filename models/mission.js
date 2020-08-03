@@ -11,7 +11,8 @@ var missionSchema = mongoose.Schema({
     experience: Number,
     type: String,
     target: Array,
-    outOfDate: Boolean
+    outOfDate: Boolean,
+    function: String
 })
 
 var missionLogsSchema = mongoose.Schema({
@@ -22,6 +23,7 @@ var missionLogsSchema = mongoose.Schema({
 })
 
 missionSchema.index({ "creator._id": 1 })
+missionSchema.index({ function: 1 })
 missionLogsSchema.index({ missionID: 1 })
 missionLogsSchema.index({ userID: 1 })
 
@@ -53,5 +55,5 @@ exports.getLogs = (data, limit, offset, cb) => {
     missionLogsModel.find(data, (err, mission) => {
         if (err) return cb(err)
         return cb(err, mission)
-    })
+    }).limit(limit).skip(offset)
 }

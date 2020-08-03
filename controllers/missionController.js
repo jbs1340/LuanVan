@@ -2,6 +2,7 @@ var missionDB = require('../models/mission')
 var levelController = require('./levelController')
 var userDB = require('../models/user')
 var moment = require('moment')
+
 exports.create = (req, res) => {
     var currentUser = req.currentUser;
     var query = req.body
@@ -201,6 +202,32 @@ exports.filter_by_date = (req, res) => {
             return res.status(500).send({ status: 500, message: err.message })
         if (missions.length > 0) {
             return res.status(200).send({ status: 200, message: "Query successfully", data: missions })
+        } else {
+            return res.status(400).send({ status: 404, message: "NOT_FOUND", data: [] })
+        }
+    })
+}
+
+exports.getMissionsLogCurrentUser = (req, res) => {
+    var currentUser = req.currentUser
+    var missionId = req.query.missionID || ""
+    var limit = parseInt(req.query.limit) || 1;
+    var offset = parseInt(req.query.offset) || 0;
+    console.log(currentUser._id)
+    if (missionId == "") {
+        return res.status(400).send({ status: 400, message: "MISSING MISSION ID" })
+    }
+
+    var query = {
+        missionID: missionId,
+        userID: currentUser._id
+    }
+
+    missionDB.getLogs(query, limit, offset, (err, log) => {
+        if (err)
+            return res.status(500).send({ status: 500, message: err.message })
+        if (log.length > 0) {
+            return res.status(200).send({ status: 200, message: "Query successfully", data: log })
         } else {
             return res.status(400).send({ status: 404, message: "NOT_FOUND", data: [] })
         }
