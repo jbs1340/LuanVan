@@ -56,6 +56,7 @@ exports.getFromId = function(id, cb) {
         return cb(null, data);
     })
 }
+
 exports.getFromUsername = function(_username, cb) {
     UserModel.findOne({ username: _username }, function(err, data) {
         if (err) return cb(err);
@@ -91,7 +92,7 @@ exports.ranking_all = (limit, offset, cb) => {
     UserModel.find({}, (err, users) => {
         if (err) return cb(err)
         return cb(null, users)
-    }).sort({ level: -1, experience: -1 }).limit(limit).skip(offset)
+    }).sort({ experience: -1, coin: -1 }).limit(limit).skip(offset)
 }
 
 exports.ranking_self = (_id, cb) => {
