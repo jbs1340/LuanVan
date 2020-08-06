@@ -10,6 +10,8 @@ var chatroomSchema = mongoose.Schema({
     messages: Array
 })
 
+chatroomSchema.index({ users: 1 })
+
 var chatroomModel = mongoose.model("Chatroom", chatroomSchema)
 
 exports.create = async(data, cb) => {
