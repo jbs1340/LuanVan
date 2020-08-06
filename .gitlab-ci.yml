@@ -43,6 +43,8 @@ test:
         - .env
         - socket.js
         - app.js
+        - public/
+        - public/uploads/
   
   
 .build-template: &build-template

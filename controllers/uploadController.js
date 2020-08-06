@@ -9,12 +9,12 @@ exports.uploads = (req, res) => {
     var name = req.body.name || "img-" + moment().unix() + ".jpg"
     var realFile = Buffer.from(file, "base64")
         // console.log(file)
-    if (!fs.existsSync(rocess.env.PUBLIC_DIR)) {
-        fs.mkdirSync(rocess.env.PUBLIC_DIR);
+    if (!fs.existsSync(process.env.PUBLIC_DIR)) {
+        fs.mkdirSync(process.env.PUBLIC_DIR);
     }
 
-    if (!fs.existsSync(rocess.env.PUBLIC_DIR + "/uploads")) {
-        fs.mkdirSync(rocess.env.PUBLIC_DIR + "/uploads");
+    if (!fs.existsSync(process.env.PUBLIC_DIR + "/uploads")) {
+        fs.mkdirSync(process.env.PUBLIC_DIR + "/uploads");
     }
 
     fs.write(process.env.PUBLIC_DIR + "/" + name, realFile, (err) => {
