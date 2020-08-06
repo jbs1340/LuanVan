@@ -17,7 +17,7 @@ exports.uploads = (req, res) => {
         fs.mkdirSync(process.env.PUBLIC_DIR + "/uploads");
     }
 
-    fs.write(process.env.PUBLIC_DIR + "/" + name, realFile, (err) => {
+    fs.writeFile(path.join(process.env.PUBLIC_DIR, "/", name), realFile, (err) => {
 
         if (err) {
             return res.status(400).send({ status: 400, url: "", message: err })
