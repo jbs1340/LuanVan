@@ -149,7 +149,7 @@ exports.updateInfo = async(req, res) => {
         if (data.password != undefined) {
             bcrypt.hash(data.password, 10, (err, pass) => {
                 if (err)
-                    return res.status(400).send({ status: 400, message: err.message })
+                    return res.status(400).send({ status: 400, message: "Cannot update your password" })
                 data.password = pass
                 resolve(data)
             })
@@ -158,8 +158,9 @@ exports.updateInfo = async(req, res) => {
         }
     }).then(data => {
         UserDB.updateUser(currentUser._id, data, (err, user) => {
-            if (err)
-                return res.status(400).send({ status: 400, message: err.message })
+            if (err) {
+                return res.status(400).send({ status: 400, message: err })
+            }
             if (user) {
                 user = data
                 return res.status(200).send({ status: 200, message: "Updated successfully", data: user })

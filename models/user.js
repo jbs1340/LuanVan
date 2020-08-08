@@ -26,7 +26,7 @@ const userSchema = mongoose.Schema({
     trainee: Array,
     createdTime: Date
 })
-userSchema.index({ username: 1 })
+userSchema.index({ username: 1 }, { unique: true })
 userSchema.index({ email: 1 })
 
 var UserModel = mongoose.model("User", userSchema);
