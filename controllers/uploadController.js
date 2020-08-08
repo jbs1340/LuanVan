@@ -2,6 +2,7 @@ var fs = require("fs");
 var moment = require('moment')
 var path = require('path');
 require('dotenv').config();
+var sharp = require('sharp')
 
 exports.uploads = (req, res) => {
     var file = req.body.file || ""
@@ -20,14 +21,14 @@ exports.uploads = (req, res) => {
         if (err) {
             return res.status(400).send({ status: 400, url: "", message: err })
         }
-        var newName = moment().unix() + "-" + name + ".jpg"
+        var newName = moment().unix() + "-" + name
         var newPath = process.env.PUBLIC_DIR + '/uploads/' + newName
-        fs.rename(process.env.PUBLIC_DIR + "/" + name, newPath, (err) => {
-            if (err) {
-                return res.status(400).send({ status: 400, url: "", message: err })
-            }
-            var path = "uploads/" + newName
-            return res.status(200).send({ status: 200, url: path, message: "Uploaded !" })
-        })
+        sharp(path.join(process.env.PUBLIC_DIR, "/", name))
+            .resize(250, 200)
+            .toFile(newPath)
+            .then(() => {
+                var path = "uploads/" + newName
+                return res.status(200).send({ status: 200, url: path, message: "Uploaded !" })
+            });
     })
 }

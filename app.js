@@ -101,12 +101,9 @@ app.use(function(err, req, res, next) {
     var message = {}
     message.message = err.message
     message.status = err.status
-    res.locals.error = req.app.get('env') === 'development' ? message : message = { status: 500, message: "Server error" };
+    res.locals.error = req.app.get('env') === 'development' ? message : message = { status: 500, message: message };
 
     // render the error page
-    if (message.status == 500) {
-        axios.post(`http://api.telegram.org/bot1319027140:AAEC7QwlZRh_Vbygv352GtLwmc1gDa5a2a0/sendMessage?chat_id=-1001200490767&text= ! YUH crashed ${err.stack}`)
-    }
     res.status(err.status || 500).send(message);
 });
 
