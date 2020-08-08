@@ -51,7 +51,7 @@ app.use(compression());
 process.env.NODE_ENV != "prd" ? app.use(logger("dev")) : null;
 app.use(bodyParser.json({ limit: "51mb" }));
 app.use(bodyParser.urlencoded({
-    extended: true
+    extended: false
 }));
 app.use(cookieParser());
 process.env.PUBLIC_DIR = path.join(__dirname, 'public')
@@ -66,10 +66,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Credentials', 'true')
     next()
 })
-app.get('/', (req, res) => {
-    res.sendFile(__dirname);
-});
-app.use('/', index);
+
 app.use('/me', me);
 app.use('/user', auth);
 app.use('/bureau', bureau);
@@ -101,7 +98,7 @@ app.use(function(err, req, res, next) {
     var message = {}
     message.message = err.message
     message.status = err.status
-    res.locals.error = req.app.get('env') === 'development' ? message : message = { status: 500, message: message };
+    res.locals.error = req.app.get('env') === 'development' ? message : message = { message };
 
     // render the error page
     res.status(err.status || 500).send(message);

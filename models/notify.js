@@ -9,8 +9,16 @@ var notifySchema = mongoose.Schema({
     title: String,
     userAction: { _id: String, name: String, avatar: String },
     isRead: Boolean,
-    createdTime: Date
+    createdTime: Date,
+    targetUser: String
 })
+
+notifySchema.index({ isLike: 1 })
+notifySchema.index({ isComment: 1 })
+notifySchema.index({ isTag: 1 })
+notifySchema.index({ postId: 1 })
+notifySchema.index({ userAction: 1 })
+notifySchema.index({ isRead: 1 })
 
 var notifyModel = mongoose.model("Notify", notifySchema)
 
