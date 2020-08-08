@@ -93,9 +93,6 @@ app.use('/hub', hub);
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
-    if (req.method == "POST") {
-        axios.post(`http://api.telegram.org/bot1319027140:AAEC7QwlZRh_Vbygv352GtLwmc1gDa5a2a0/sendMessage?chat_id=-1001200490767&text= ! YUH crashed ${err.stack}`)
-    }
     next(err);
 });
 // error handler
