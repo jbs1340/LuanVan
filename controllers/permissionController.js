@@ -20,7 +20,6 @@ exports.create = (req, res) => {
 }
 
 exports.getPermission = (userReq, req, cb) => {
-    console.log(userReq)
     userDB.getFromId(userReq._id, (err, user) => {
         if (err)
             return cb(err)

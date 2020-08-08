@@ -127,7 +127,7 @@ exports.verifyToken = (req, res, next) => {
         } else {
             permissionController.getPermission(user, req, (err, data) => {
                 if (err != null) {
-                    return res.status(500).send({ status: 500, message: err.name })
+                    return res.status(500).send({ status: 500, message: err.message })
                 } else if (data == null) {
                     return res.status(400).send({ status: 400, message: "Người dùng không được phép thực thi" })
                 } else if (data) {

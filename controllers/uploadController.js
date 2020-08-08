@@ -2,6 +2,7 @@ var fs = require("fs");
 var formidable = require("formidable");
 var moment = require('moment')
 var path = require('path');
+var resize = require('sharp')
 require('dotenv').config();
 
 exports.uploads = (req, res) => {
@@ -16,6 +17,7 @@ exports.uploads = (req, res) => {
     if (!fs.existsSync(process.env.PUBLIC_DIR + "/uploads")) {
         fs.mkdirSync(process.env.PUBLIC_DIR + "/uploads");
     }
+
 
     fs.writeFile(path.join(process.env.PUBLIC_DIR, "/", name), realFile, (err) => {
 
