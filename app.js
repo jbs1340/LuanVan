@@ -29,8 +29,7 @@ const mongoose = require('mongoose');
 var axios = require('axios');
 const e = require('express');
 require('dotenv').config();
-
-require('./config/passport')(passport);
+require('./config/passport')(passport)
 
 var app = express();
 
@@ -41,7 +40,7 @@ mongoose.connect(
 );
 
 process.on('uncaughtException', (err, origin) => {
-    axios.post(`http://api.telegram.org/bot1319027140:AAEC7QwlZRh_Vbygv352GtLwmc1gDa5a2a0/sendMessage?chat_id=-1001200490767&text= ! YUH crashed ${err.stack} + ${origin}`)
+    axios.post(`http://api.telegram.org/bot1319027140:AAEC7QwlZRh_Vbygv352GtLwmc1gDa5a2a0/sendMessage?chat_id=-1001200490767&text= ! YUH crashed ${err.stack}`)
 });
 
 // view engine setup
@@ -49,9 +48,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 app.use(compression());
-app.use(logger('tiny'));
+app.use(logger("dev"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    json: { limit: '50mb', extended: true },
+    urlencoded: { limit: '50mb', extended: true }
+}));
 app.use(cookieParser());
 process.env.PUBLIC_DIR = path.join(__dirname, 'public')
 app.use(express.static(path.join(__dirname, 'public')));
@@ -98,7 +100,8 @@ app.use(function(req, res, next) {
 });
 // error handler
 app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
+    console.log(err.stack)
+        // set locals, only providing error in development
     res.locals.message = err.message;
     var message = {}
     message.message = err.message
@@ -106,7 +109,9 @@ app.use(function(err, req, res, next) {
     res.locals.error = req.app.get('env') === 'development' ? message : message = { status: 500, message: "Server error" };
 
     // render the error page
-
+    if (message.status == 500) {
+        axios.post(`http://api.telegram.org/bot1319027140:AAEC7QwlZRh_Vbygv352GtLwmc1gDa5a2a0/sendMessage?chat_id=-1001200490767&text= ! YUH crashed ${err.stack}`)
+    }
     res.status(err.status || 500).send(message);
 });
 

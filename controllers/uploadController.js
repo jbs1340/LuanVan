@@ -1,15 +1,12 @@
 var fs = require("fs");
-var formidable = require("formidable");
 var moment = require('moment')
 var path = require('path');
-var resize = require('sharp')
 require('dotenv').config();
 
 exports.uploads = (req, res) => {
     var file = req.body.file || ""
     var name = req.body.name || "img-" + moment().unix() + ".jpg"
     var realFile = Buffer.from(file, "base64")
-        // console.log(file)
     if (!fs.existsSync(process.env.PUBLIC_DIR)) {
         fs.mkdirSync(process.env.PUBLIC_DIR);
     }
@@ -18,13 +15,12 @@ exports.uploads = (req, res) => {
         fs.mkdirSync(process.env.PUBLIC_DIR + "/uploads");
     }
 
-
     fs.writeFile(path.join(process.env.PUBLIC_DIR, "/", name), realFile, (err) => {
 
         if (err) {
             return res.status(400).send({ status: 400, url: "", message: err })
         }
-        var newName = moment().unix() + "-" + name
+        var newName = moment().unix() + "-" + name + ".jpg"
         var newPath = process.env.PUBLIC_DIR + '/uploads/' + newName
         fs.rename(process.env.PUBLIC_DIR + "/" + name, newPath, (err) => {
             if (err) {

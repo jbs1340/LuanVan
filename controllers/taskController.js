@@ -157,7 +157,6 @@ exports.done = (req, res) => {
                             if (err) {
                                 isOK = false
                                 return res.status(500).send({ status: 500, message: err.message })
-                                console.log(err)
                             }
                             if (usr) {
                                 var bonusCoin = parseInt(task.coin)
