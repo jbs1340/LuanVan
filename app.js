@@ -49,10 +49,9 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 app.use(compression());
 app.use(logger("dev"));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({
-    json: { limit: '50mb', extended: true },
-    urlencoded: { limit: '50mb', extended: true }
+    extended: true
 }));
 app.use(cookieParser());
 process.env.PUBLIC_DIR = path.join(__dirname, 'public')
