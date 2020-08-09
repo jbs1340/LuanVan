@@ -52,11 +52,24 @@ exports.create = (data, cb) => {
     })
 }
 
+exports.distinct = (field, query, limit, offset, cb) => {
+    missionModel.distinct(field, query, (err, logs) => {
+        return cb(err, logs)
+    })
+}
+
 exports.get = (query, limit, offset, cb) => {
     missionModel.find(query, (err, mission) => {
         if (err) return cb(err)
         return cb(err, mission)
     }).limit(limit).skip(offset).sort({ createdTime: -1 })
+}
+
+exports.getNonLimit = (query, cb) => {
+    missionModel.find(query, (err, mission) => {
+        if (err) return cb(err)
+        return cb(err, mission)
+    }).sort({ createdTime: -1 })
 }
 
 exports.done = (query, cb) => {
@@ -76,7 +89,7 @@ exports.getLogs = (data, limit, offset, cb) => {
 exports.distinctLogs = (field, query, limit, offset, cb) => {
     missionLogsModel.distinct(field, query, (err, logs) => {
         return cb(err, logs)
-    }).limit(limit).skip(offset)
+    })
 }
 
 exports.create_function = (data, cb) => {

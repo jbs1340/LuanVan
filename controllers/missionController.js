@@ -217,7 +217,16 @@ exports.getMissionFinished = (req, res) => {
         if (err)
             return res.status(500).send({ status: 500, message: err.message })
         if (log.length > 0) {
-            return res.status(200).send({ status: 200, message: "Query successfully", data: log })
+            var q = {
+                missionID: { $in: log }
+            }
+            missionDB.getLogs(q, log.length, 0, (err, logs) => {
+                if (logs.length > 0) {
+                    return res.status(200).send({ status: 200, message: "Query successfully", data: logs })
+                } else {
+                    return res.status(err ? 400 : 404).send({ status: err ? 400 : 404, message: "Query failed", data: [] })
+                }
+            })
         } else {
             return res.status(400).send({ status: 404, message: "NOT_FOUND", data: [] })
         }
@@ -230,16 +239,25 @@ exports.getMissionNotFinished = (req, res) => {
     var offset = parseInt(req.query.offset) || 0;
 
     var query = {
-        userID: { "$ne": currentUser._id }
+        userID: currentUser._id
     }
 
     missionDB.distinctLogs("missionID", query, limit, offset, (err, log) => {
         if (err)
             return res.status(500).send({ status: 500, message: err.message })
         if (log.length > 0) {
-            return res.status(200).send({ status: 200, message: "Query successfully", data: log })
+            var q = {
+                _id: { $nin: log }
+            }
+            missionDB.get(q, (err, limit, offset, logs) => {
+                if (logs.length > 0) {
+                    return res.status(200).send({ status: 200, message: "Query successfully", data: logs, total: logs.length })
+                } else {
+                    return res.status(err ? 400 : 404).send({ status: err ? 400 : 404, message: "Query failed", data: [] })
+                }
+            })
         } else {
-            return res.status(400).send({ status: 404, message: "NOT_FOUND", data: [] })
+            return res.status(404).send({ status: 404, message: "NOT_FOUND", data: [] })
         }
     })
 }
