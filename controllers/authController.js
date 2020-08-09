@@ -83,7 +83,9 @@ exports.register = (req, res) => {
         rank: 0,
         mentor: [],
         trainee: [],
-        createdTime: moment().format()
+        createdTime: moment().format(),
+        tasks: 0,
+        missions: 0
     };
     var result = {};
     var status = 200;

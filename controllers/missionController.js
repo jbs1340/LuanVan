@@ -2,6 +2,7 @@ var missionDB = require('../models/mission')
 var levelController = require('./levelController')
 var userDB = require('../models/user')
 var moment = require('moment')
+var jms = require('../services/jobService')
 
 exports.create = (req, res) => {
     var currentUser = req.currentUser;
@@ -123,62 +124,31 @@ exports.getBy = (req, res) => {
 exports.done = async(req, res) => {
     var currentUser = req.currentUser
     var missionID = req.query.missionID
-    await missionDB.getLogs({ missionID: missionID, userID: currentUser._id }, 1, 0, async(err, mission) => {
+    await missionDB.getLogs({ missionID: missionID, userID: currentUser._id }, 1, 0, async(err, missionLogs) => {
         if (err)
             return res.status(500).send({ status: 500, message: err.message })
-        if (mission.length > 0) {
+        if (missionLogs.length > 0) {
             return res.status(400).send({ status: 400, message: "Bạn đã hoàn thành nhiệm vụ này rồi." })
         } else {
-            var data = {
-                missionID: missionID,
-                userID: currentUser._id,
-                status: "DONE",
-                completedTime: moment().format()
-            }
-            await missionDB.done(data, async(err, m) => {
-                if (err)
+            missionDB.get({ _id: missionID }, 1, 0, (err, missions) => {
+                if (err) {
                     return res.status(500).send({ status: 500, message: err.message })
-                if (m) {
-                    await missionDB.get({ _id: missionID }, 1, 0, async(err, curMission) => {
-                        if (err)
-                            return res.status(500).send({ status: 500, message: err.message })
-                        if (curMission.length > 0) {
-                            var bonusCoin = curMission[0].coin
-                            var bonusExperience = curMission[0].experience
-                            await userDB.getFromId(currentUser._id, async(err, user) => {
-                                if (err)
-                                    return res.status(500).send({ status: 500, message: err.message })
-                                if (user) {
-                                    var curCoin = parseInt(user.coin) + parseInt(bonusCoin)
-                                    var curExperience = parseInt(user.experience) + parseInt(bonusExperience)
-                                    await userDB.updateUser(currentUser._id, { coin: curCoin, experience: curExperience }, async(err, usr) => {
-                                        if (err)
-                                            return res.status(500).send({ status: 500, message: err.message })
-                                        if (!usr) {
-                                            return res.status(500).send({ status: 500, message: "Không thể update" })
-                                        } else {
-                                            levelController.checkLevel(usr)
-                                            return await res.status(200).send({ status: 200, message: "Chúc mừng bạn đã hoàn thành nhiệm vụ" })
-                                        }
-                                    })
-                                } else {
-                                    return res.status(404).send({ status: 404, message: "Không tìm thấy user" })
-                                }
-                            })
-                        } else {
-                            return res.status(404).send({ status: 404, message: "Không tìm thấy nhiệm vụ" })
-                        }
-                    })
                 } else {
-                    return res.status(500).send({ status: 500, message: err.message })
+                    if (missions.length > 0) {
+                        missions[0].currentUser = currentUser._id
+                        jms.socket.emit('/mission/done', missions)
+                        return res.status(200).send({ status: 200, message: "Processing", data: missions })
+                    } else {
+                        return res.status(404).send({ status: 404, message: "Not found", data: [] })
+                    }
                 }
-
             })
-
         }
     })
 
 }
+
+
 
 exports.filter_by_date = (req, res) => {
     var date = req.query.date || ""
@@ -224,6 +194,46 @@ exports.getMissionsLogCurrentUser = (req, res) => {
     }
 
     missionDB.getLogs(query, limit, offset, (err, log) => {
+        if (err)
+            return res.status(500).send({ status: 500, message: err.message })
+        if (log.length > 0) {
+            return res.status(200).send({ status: 200, message: "Query successfully", data: log })
+        } else {
+            return res.status(400).send({ status: 404, message: "NOT_FOUND", data: [] })
+        }
+    })
+}
+
+exports.getMissionFinished = (req, res) => {
+    var currentUser = req.currentUser
+    var limit = parseInt(req.query.limit) || 1;
+    var offset = parseInt(req.query.offset) || 0;
+
+    var query = {
+        userID: currentUser._id
+    }
+
+    missionDB.distinctLogs("missionID", query, limit, offset, (err, log) => {
+        if (err)
+            return res.status(500).send({ status: 500, message: err.message })
+        if (log.length > 0) {
+            return res.status(200).send({ status: 200, message: "Query successfully", data: log })
+        } else {
+            return res.status(400).send({ status: 404, message: "NOT_FOUND", data: [] })
+        }
+    })
+}
+
+exports.getMissionNotFinished = (req, res) => {
+    var currentUser = req.currentUser
+    var limit = parseInt(req.query.limit) || 1;
+    var offset = parseInt(req.query.offset) || 0;
+
+    var query = {
+        userID: { "$ne": currentUser._id }
+    }
+
+    missionDB.distinctLogs("missionID", query, limit, offset, (err, log) => {
         if (err)
             return res.status(500).send({ status: 500, message: err.message })
         if (log.length > 0) {

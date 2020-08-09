@@ -24,10 +24,20 @@ const userSchema = mongoose.Schema({
     rank: Number,
     mentor: Array,
     trainee: Array,
-    createdTime: Date
+    createdTime: Date,
+    tasks: Number,
+    missions: Number,
 })
 userSchema.index({ username: 1 }, { unique: true })
 userSchema.index({ email: 1 })
+userSchema.index({ name: 1 })
+userSchema.index({ password: 1 })
+userSchema.index({ level: 1 })
+userSchema.index({ experience: 1 })
+
+
+
+// userSchema.index({ username: "text" })
 
 var UserModel = mongoose.model("User", userSchema);
 

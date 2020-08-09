@@ -12,13 +12,20 @@ var missionSchema = mongoose.Schema({
     type: String,
     target: Array,
     outOfDate: Boolean,
-    function: String
+    function: String,
+    currentUser: String
 })
 
 var missionLogsSchema = mongoose.Schema({
+    img: String,
+    deadline: Date,
+    title: String,
+    description: String,
     missionID: String,
     userID: String,
     status: String,
+    coin: Number,
+    experience: Number,
     completedTime: Date
 })
 
@@ -63,6 +70,12 @@ exports.getLogs = (data, limit, offset, cb) => {
     missionLogsModel.find(data, (err, mission) => {
         if (err) return cb(err)
         return cb(err, mission)
+    }).limit(limit).skip(offset)
+}
+
+exports.distinctLogs = (field, query, limit, offset, cb) => {
+    missionLogsModel.distinct(field, query, (err, logs) => {
+        return cb(err, logs)
     }).limit(limit).skip(offset)
 }
 
