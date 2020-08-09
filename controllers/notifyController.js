@@ -42,10 +42,24 @@ exports.getAny = (req, res) => {
     var reverse = (String(req.query.reverse) === "true");
 
     notifyDB.getAny(q, limit, offset, reverse, (err, notify) => {
-        if (err) {
-            return res.status(500).send({ status: 400, message: err.message })
+        if (notify) {
+            return res.status(200).send({ status: 200, message: "Query successfully", data: notify })
         } else {
-            return res.status(200).send({ status: 200, message: "Created successfully", data: notify })
+            return res.status(200).send({ status: err ? 400 : 404, message: "Query failed", data: [] })
+        }
+    })
+}
+
+exports.getMyNotifies = (req, res) => {
+    var limit = parseInt(req.query.limit) || 1;
+    var offset = parseInt(req.query.offset) || 0;
+    var currentUser = req.currentUser
+
+    notifyDB.getAny({ userAction: currentUser._id }, limit, offset, true, (err, noti) => {
+        if (noti) {
+            return res.status(200).send({ status: 200, message: "Query successfully", data: noti })
+        } else {
+            return res.status(200).send({ status: err ? 400 : 404, message: err.message || "Query failed", data: [] })
         }
     })
 }

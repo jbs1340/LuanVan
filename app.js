@@ -6,7 +6,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var index = require('./routes/index');
 var me = require('./routes/me');
 var auth = require('./routes/auth');
 var bureau = require('./routes/bureau');
@@ -24,6 +23,7 @@ var market = require('./routes/market')
 var relation = require('./routes/relation')
 var tankinh = require('./routes/tankinh')
 var hub = require('./routes/hub')
+var notify = require('./routes/notify')
 const passport = require('passport');
 const mongoose = require('mongoose');
 var axios = require('axios');
@@ -84,6 +84,7 @@ app.use('/market', market);
 app.use('/relation', relation);
 app.use('/tankinh', tankinh);
 app.use('/hub', hub);
+app.use('/notify', notify);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

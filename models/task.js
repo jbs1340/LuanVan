@@ -40,8 +40,12 @@ exports.done = (_id, cb) => {
 }
 
 exports.getTasksBy = async(data, limit, offset, cb) => {
-    var task = await taskModel.find(data).limit(limit).skip(offset)
+    var task = await taskModel.find(data, cb).limit(limit).skip(offset)
     return task
+}
+
+exports.getTasks = (data, limit, offset, cb) => {
+
 }
 
 exports.getTaskByID = (_id, cb) => {

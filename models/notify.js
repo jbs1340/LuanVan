@@ -20,7 +20,7 @@ notifySchema.index({ postId: 1 })
 notifySchema.index({ userAction: 1 })
 notifySchema.index({ isRead: 1 })
 
-var notifyModel = mongoose.model("Notify", notifySchema)
+var notifyModel = mongoose.model("notify", notifySchema)
 
 exports.create = (data, cb) => {
     notifyModel.create(data, (err, notis) => {

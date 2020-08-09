@@ -220,29 +220,31 @@ exports.updateStatus = (req, res) => {
 }
 
 exports.filter_by_date = (req, res) => {
-    var date = req.query.date || ""
+    var currentUser = req.currentUser
+    var date = moment(req.query.date, "DD-MM-YYYY").add(23, "hours").utc().format() || ""
     var limit = parseInt(req.query.limit) || 1
     var offset = parseInt(req.query.offset) || 0
 
     if (date == "") {
+        console.log(date)
         return res.status(400).send({ status: 400, message: "INPUT INVALID" })
     }
 
-    var start_date = date + "T00:00:00.000+00:00"
-    var end_date = date + "T23:59:59.000+00:00"
+    var end_date = date
 
     var query = {
-        "deadline": { "$lte": end_date },
-        "creator._id": currentUser._id
+        "deadline": { "$lte": new Date(end_date) },
+        "takenBy._id": currentUser._id
     }
 
     taskDB.getTasksBy(query, limit, offset, (err, tasks) => {
+        console.log(query)
         if (err)
             return res.status(500).send({ status: 500, message: err.message })
         if (tasks.length > 0) {
-            return res.status(200).send({ status: 200, message: "Query successfully", data: tasks })
+            return res.status(200).send({ status: 200, message: "Query successfully", data: tasks, total: tasks.length })
         } else {
-            return res.status(400).send({ status: 404, message: "NOT_FOUND", data: [] })
+            return res.status(404).send({ status: 404, message: "NOT_FOUND", data: [] })
         }
-    })
+    }).then()
 }

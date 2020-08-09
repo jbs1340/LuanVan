@@ -16,7 +16,11 @@ exports.getUsersAnyByUsername = (req, res) => {
     var limit = parseInt(req.query.limit) || 1;
     var offset = parseInt(req.query.offset) || 0;
     var query = {
-        username: { $regex: username + '.*' }
+        $or: [
+            { username: { $regex: username } },
+            { name: { $regex: username } }
+        ]
+
     }
     userDB.findAny(query, limit, offset, (err, user) => {
         if (err)
@@ -29,7 +33,7 @@ exports.getUsersAnyByUsername = (req, res) => {
                 newUser.address = ""
                 dataUser.push(newUser)
             });
-            return res.status(200).send({ status: 200, message: "Query successfully", data: dataUser })
+            return res.status(200).send({ status: 200, message: "Query successfully", data: dataUser, total: user.length })
         } else
             return res.status(404).send({ status: 404, message: "NOT FOUND", data: [] })
     })
