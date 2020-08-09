@@ -13,7 +13,7 @@ var socket = io('http://10.110.8.100/jms/v1', {
 
 socket.on('connect', (data) => {
     if (socket.connected) {
-        console.log("Socket JMS started")
+        console.log("Socket JMS started ")
     }
 })
 

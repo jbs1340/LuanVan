@@ -45,6 +45,7 @@ test:
         - app.js
         - public/
         - public/uploads/
+        - services/
   
   
 .build-template: &build-template
