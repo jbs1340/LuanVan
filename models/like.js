@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 const likeSchema = mongoose.Schema({
-    userID: mongoose.Schema.ObjectId,
+    userID: String,
     name: String,
     avatar: String,
     postID: String,

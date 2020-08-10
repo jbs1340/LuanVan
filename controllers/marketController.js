@@ -95,7 +95,7 @@ exports.buy = (req, res) => {
 
                     var itemQuantities = parseInt(items[0].quantities)
                     if (quantities > itemQuantities) {
-                        return res.status(400).send({ status: 400, message: "Số lương bạn mua không đủ" })
+                        return res.status(400).send({ status: 400, message: "Số lượng bạn mua không đủ" })
                     } else if (total > user.coin) {
                         return res.status(400).send({ status: 400, message: "Số tiền bạn không đủ" })
                     } else {
