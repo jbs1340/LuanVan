@@ -55,11 +55,11 @@ exports.getMyNotifies = (req, res) => {
     var offset = parseInt(req.query.offset) || 0;
     var currentUser = req.currentUser
 
-    notifyDB.getAny({ userAction: currentUser._id }, limit, offset, true, (err, noti) => {
-        if (noti) {
-            return res.status(200).send({ status: 200, message: "Query successfully", data: noti })
+    notifyDB.getAny({ "userAction._id": currentUser._id }, limit, offset, true, (err, noti) => {
+        if (noti.length > 0) {
+            return res.status(200).send({ status: 200, message: "Query successfully", data: noti, total: noti.length })
         } else {
-            return res.status(200).send({ status: err ? 400 : 404, message: err.message || "Query failed", data: [] })
+            return res.status(err ? 400 : 404).send({ status: err ? 400 : 404, message: err ? err.message : "Query failed", data: [] })
         }
     })
 }

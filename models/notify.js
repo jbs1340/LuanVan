@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 
 var notifySchema = mongoose.Schema({
-    _id: mongoose.mongo.ObjectID,
     isLike: Boolean,
     isComment: Boolean,
     isTag: Boolean,
@@ -32,10 +31,10 @@ exports.getAny = (query, limit, offset, reverse, cb) => {
     if (!reverse) {
         notifyModel.find(query, (err, notis) => {
             return cb(err, notis)
-        }).limit(limit).offset(offset)
+        }).limit(limit).skip(offset)
     } else {
         notifyModel.find(query, (err, notis) => {
             return cb(err, notis)
-        }).limit(limit).offset(offset).sort({ createdTime: -1 })
+        }).limit(limit).skip(offset).sort({ createdTime: -1 })
     }
 }
