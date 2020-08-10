@@ -1,5 +1,5 @@
 const io = require('socket.io-client');
-var socket = io('http://10.110.8.100/jms/v1', {
+var socket = io('http://10.110.10.252/jms/v1', {
     transportOptions: {
         polling: {
             extraHeaders: {
@@ -18,7 +18,7 @@ socket.on('connect', (data) => {
 })
 
 socket.on('disconnect', () => {
-    console.log("Socket JMS disconnected")
+    console.log("Socket JMS disconnected ")
 })
 
 socket.on('error', socket => {
