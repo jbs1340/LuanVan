@@ -245,11 +245,11 @@ exports.getMissionNotFinished = (req, res) => {
     missionDB.distinctLogs("missionID", query, limit, offset, (err, log) => {
         if (err)
             return res.status(500).send({ status: 500, message: err.message })
-        if (log.length > 0) {
+        if (log.length >= 0) {
             var q = {
                 _id: { $nin: log }
             }
-            missionDB.get(q, (err, limit, offset, logs) => {
+            missionDB.get(q, limit, offset, (err, logs) => {
                 if (logs.length > 0) {
                     return res.status(200).send({ status: 200, message: "Query successfully", data: logs, total: logs.length })
                 } else {

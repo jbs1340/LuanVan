@@ -7,6 +7,9 @@ router.post('/create', authController.verifyToken, missionController.create)
 router.get('/list', authController.verifyToken, missionController.getMission)
 router.get('/any_by', authController.verifyToken, missionController.getBy)
 router.get('/my_logs', authController.verifyToken, missionController.getMissionsLogCurrentUser)
+router.get('/finished', authController.verifyToken, missionController.getMissionFinished)
+router.get('/not_finished', authController.verifyToken, missionController.getMissionNotFinished)
+
 router.get('/by_date', authController.verifyToken, missionController.filter_by_date)
 router.put('/done', authController.verifyToken, missionController.done)
 
