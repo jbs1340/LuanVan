@@ -99,7 +99,7 @@ app.use(function(err, req, res, next) {
     var message = {}
     message.message = err.message
     message.status = err.status
-    res.locals.error = req.app.get('env') === 'development' ? message : message = { message };
+    res.locals.error = req.app.get('env') === 'development' ? message : message;
 
     // render the error page
     res.status(err.status || 500).send(message);
