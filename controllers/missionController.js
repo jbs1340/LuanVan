@@ -279,7 +279,7 @@ exports.create_verify_job = (req, res) => {
         if (err)
             return res.status(500).send({ status: 500, message: err.message })
         if (func) {
-            return res.status(200).send({ status: 200, message: "Created successfully", data: func })
+            return res.status(200).send({ status: 200, message: "Created successfully ", data: func })
         } else {
             return res.status(400).send({ status: 400, message: "Cannot create", data: [] })
         }
