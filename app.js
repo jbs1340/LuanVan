@@ -27,7 +27,6 @@ var notify = require('./routes/notify')
 const passport = require('passport');
 const mongoose = require('mongoose');
 var axios = require('axios');
-const e = require('express');
 require('dotenv').config();
 require('./config/passport')(passport)
 
